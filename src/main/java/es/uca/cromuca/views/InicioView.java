@@ -1,4 +1,4 @@
-package es.uca.cromuca.views.main;
+package es.uca.cromuca.views;
 
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
@@ -10,7 +10,6 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.Route;
 import es.uca.cromuca.springclasses.SecurityUtils;
-import es.uca.cromuca.views.main.MainView;
 
 @Route(value = "", layout = MainView.class)
 public class InicioView extends VerticalLayout {

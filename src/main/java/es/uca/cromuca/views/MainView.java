@@ -1,4 +1,4 @@
-package es.uca.cromuca.views.main;
+package es.uca.cromuca.views;
 
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.HasComponents;
@@ -26,7 +26,6 @@ import es.uca.cromuca.springclasses.SecurityUtils;
  * The main view contains a button and a click listener.
  */
 @Theme(Lumo.class)
-//@Route(value = "")
 @PWA(name = "AutomaticFoodList app",
         shortName = "AFL app",
         description = "Planificaci'on automatica de tu comida",
@@ -50,18 +49,18 @@ public class MainView extends AppLayout {
 
         if (!SecurityUtils.isUserLoggedIn()) {
             tabs.add(createTab(VaadinIcon.SIGN_IN, "Iniciar sesión", LoginView.class));
-            //tabs.add(createTab(VaadinIcon.USER_CARD, "Regístrate", UsuarioDatosView.class));
+            tabs.add(createTab(VaadinIcon.USER_CARD, "Regístrate", UsuarioDatosView.class));
         } else {
             //tabs.add(createTab(VaadinIcon.PLUS, "Crear receta", CrearRecetaView.class));
-            /*if (SecurityUtils.hasRole("User")) {
-                tabs.add(createTab(VaadinIcon.RECORDS, "Mis recetas", RecetasView.class));
+            if (SecurityUtils.hasRole("User")) {
+                /*tabs.add(createTab(VaadinIcon.RECORDS, "Mis recetas", RecetasView.class));
                 tabs.add(createTab(VaadinIcon.COGS, "Configuración dietética", IntoleranciasUsuarioView.class));
                 tabs.add(createTab(VaadinIcon.CALENDAR, "Lista de Comidas", ListaComidasView.class));
-                tabs.add(createTab(VaadinIcon.LIST, "Lista de la compra", ListaCompraView.class));
+                tabs.add(createTab(VaadinIcon.LIST, "Lista de la compra", ListaCompraView.class));*/
                 tabs.add(createTab(VaadinIcon.COG, "Configuración de datos", UsuarioDatosView.class));
             }
 
-            if (SecurityUtils.hasRole("Admin")) {
+            /*if (SecurityUtils.hasRole("Admin")) {
                 tabs.add(createTab(VaadinIcon.RECORDS, "Gestión recetas", RecetasView.class));
                 tabs.add(createTab(VaadinIcon.RECORDS, "Gestión intolerancias", IntoleranciasView.class));
                 tabs.add(createTab(VaadinIcon.RECORDS, "Gestión ingrediente", IngredienteView.class));

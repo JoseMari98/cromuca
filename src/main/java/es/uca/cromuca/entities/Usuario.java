@@ -23,7 +23,6 @@ public class Usuario implements UserDetails {
     @Column(unique = true)
     private String email = "";
     private String role = "";
-    private double presupuestoPlato;
 
     //Getters
     public Long getId() {
@@ -44,10 +43,6 @@ public class Usuario implements UserDetails {
 
     public String getRole() {
         return role;
-    }
-
-    public double getPresupuestoPlato() {
-        return presupuestoPlato;
     }
 
     //Setters
@@ -77,10 +72,6 @@ public class Usuario implements UserDetails {
 
     public void setRole(String role) {
         this.role = role;
-    }
-
-    public void setPresupuestoPlato(double presupuestoPlato) {
-        this.presupuestoPlato = presupuestoPlato;
     }
 
     @Override

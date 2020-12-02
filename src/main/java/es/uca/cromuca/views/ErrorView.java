@@ -1,4 +1,4 @@
-package es.uca.cromuca.views.main;
+package es.uca.cromuca.views;
 
 import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.UI;
