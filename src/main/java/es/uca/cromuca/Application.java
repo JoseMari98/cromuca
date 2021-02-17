@@ -40,18 +40,6 @@ public class Application extends SpringBootServletInitializer {
                 u.setRole("Admin");
                 usuarioService.create(u);
             }
-            try {
-                boolean valido = usuarioService.loadUserByUsername("usuario").getRole().equals("User");
-            } catch (UsernameNotFoundException e) {
-                Usuario u = new Usuario();
-                u.setNombre("usuario");
-                u.setPassword("user1234");
-                u.setApellido("usuario");
-                u.setEmail("usuario@usuario.es");
-                u.setUsername("user");
-                u.setRole("User");
-                usuarioService.create(u);
-            }
         };
     }
 

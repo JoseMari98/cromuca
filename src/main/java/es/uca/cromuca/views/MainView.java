@@ -8,7 +8,6 @@ import com.vaadin.flow.component.applayout.DrawerToggle;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.dependency.CssImport;
-import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -21,14 +20,18 @@ import com.vaadin.flow.theme.Theme;
 import com.vaadin.flow.theme.lumo.Lumo;
 import es.uca.cromuca.entities.Usuario;
 import es.uca.cromuca.springclasses.SecurityUtils;
+import es.uca.cromuca.views.Gestion.CategoriaTaxonomicaGestionView;
+import es.uca.cromuca.views.Gestion.FamiliaGestionView;
+import es.uca.cromuca.views.Gestion.GeneroGestionView;
+import es.uca.cromuca.views.Gestion.PhylumGestionView;
 
 /**
  * The main view contains a button and a click listener.
  */
 @Theme(Lumo.class)
-@PWA(name = "AutomaticFoodList app",
-        shortName = "AFL app",
-        description = "Planificaci'on automatica de tu comida",
+@PWA(name = "CromucaApp",
+        shortName = "Cromuca",
+        description = "Registra muestras",
         enableInstallPrompt = true)
 @CssImport("./styles/shared-styles.css")
 @CssImport(value = "./styles/vaadin-text-field-styles.css", themeFor = "vaadin-text-field")
@@ -36,8 +39,6 @@ public class MainView extends AppLayout {
     Tabs tabs = new Tabs();
     final DrawerToggle drawerToggle = new DrawerToggle();
     final VerticalLayout menuLayout = new VerticalLayout();
-    private Image imagen = new Image("https://www.tododisca.com/wp-content/uploads/2019/04/dia-mundial-de-la-salud-1000x600.jpg", "fondo");
-
     final boolean touchOptimized = true;
     Button logout = new Button(new Icon(VaadinIcon.SIGN_OUT));
 
@@ -52,21 +53,13 @@ public class MainView extends AppLayout {
             tabs.add(createTab(VaadinIcon.USER_CARD, "Regístrate", UsuarioDatosView.class));
         } else {
             //tabs.add(createTab(VaadinIcon.PLUS, "Crear receta", CrearRecetaView.class));
-            if (SecurityUtils.hasRole("User")) {
-                /*tabs.add(createTab(VaadinIcon.RECORDS, "Mis recetas", RecetasView.class));
-                tabs.add(createTab(VaadinIcon.COGS, "Configuración dietética", IntoleranciasUsuarioView.class));
-                tabs.add(createTab(VaadinIcon.CALENDAR, "Lista de Comidas", ListaComidasView.class));
-                tabs.add(createTab(VaadinIcon.LIST, "Lista de la compra", ListaCompraView.class));*/
-                tabs.add(createTab(VaadinIcon.COG, "Configuración de datos", UsuarioDatosView.class));
+            if (SecurityUtils.hasRole("Admin")) {
+                tabs.add(createTab(VaadinIcon.RECORDS, "Gestión Phylum", PhylumGestionView.class));
+                tabs.add(createTab(VaadinIcon.RECORDS, "Gestión Categoria", CategoriaTaxonomicaGestionView.class));
+                tabs.add(createTab(VaadinIcon.RECORDS, "Gestión Familia", FamiliaGestionView.class));
+                tabs.add(createTab(VaadinIcon.RECORDS, "Gestión Genero", GeneroGestionView.class));
+                //tabs.add(createTab(VaadinIcon.RECORDS, "Gestión valores nutricionales", ValoresNutrcionalesView.class));
             }
-
-            /*if (SecurityUtils.hasRole("Admin")) {
-                tabs.add(createTab(VaadinIcon.RECORDS, "Gestión recetas", RecetasView.class));
-                tabs.add(createTab(VaadinIcon.RECORDS, "Gestión intolerancias", IntoleranciasView.class));
-                tabs.add(createTab(VaadinIcon.RECORDS, "Gestión ingrediente", IngredienteView.class));
-                tabs.add(createTab(VaadinIcon.RECORDS, "Gestión producto", ProductoView.class));
-                tabs.add(createTab(VaadinIcon.RECORDS, "Gestión valores nutricionales", ValoresNutrcionalesView.class));
-            }*/
         }
         addToDrawer(menuLayout, tabs); //anadirlo al desplegable
         addToNavbar(touchOptimized, drawerToggle); //anadirlo a la barra vertical

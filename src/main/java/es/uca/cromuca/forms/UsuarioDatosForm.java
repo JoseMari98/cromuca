@@ -1,6 +1,6 @@
 package es.uca.cromuca.forms;
 
-import com.sun.xml.internal.messaging.saaj.packaging.mime.MessagingException;
+//import com.sun.xml.internal.messaging.saaj.packaging.mime.MessagingException;
 import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
@@ -80,7 +80,7 @@ public class UsuarioDatosForm extends FormLayout {
         Button confirmButton = new Button("Confirmar", event -> {
             try {
                 save();
-            } catch (MessagingException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
             dialog.close();
@@ -93,14 +93,14 @@ public class UsuarioDatosForm extends FormLayout {
         confirmButton.addClickShortcut(Key.ENTER);
     }
 
-    public void save() throws MessagingException {
+    public void save() throws Exception {
         binder.forField(email)
                 // Explicit validator instance
                 .withValidator(new EmailValidator(
                         "No es un formato válido. Ejemplo de formato válido: usuario@gmail.com"))
                 .bind(Usuario::getEmail, Usuario::setEmail);
-        if(binder.validate().isOk()) {
-            if(password.getValue().equals(confirmPassword.getValue())){
+        if (binder.validate().isOk()) {
+            if (password.getValue().equals(confirmPassword.getValue())) {
                 usuario.setRole("User");
                 usuario.setUsername(username.getValue());
                 usuario.setNombre(nombre.getValue());

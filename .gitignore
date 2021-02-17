@@ -3,7 +3,7 @@
 .settings
 .project
 .classpath
-frontend/
+/frontend/
 *.iml
 .DS_Store
 

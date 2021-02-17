@@ -4,7 +4,6 @@ import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.html.H1;
-import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -13,18 +12,18 @@ import es.uca.cromuca.springclasses.SecurityUtils;
 
 @Route(value = "", layout = MainView.class)
 public class InicioView extends VerticalLayout {
-    private Button configuracion = new Button("Ir");
-    private Button listaComida = new Button("Ir");
-    private Button listaCompra = new Button("Ir");
+    //private Button configuracion = new Button("Ir");
+    //private Button listaComida = new Button("Ir");
+    //private Button listaCompra = new Button("Ir");
     private Button registrate = new Button("Ir");
     private Button login = new Button("Ir");
-    private Image imagen = new Image("https://www.tododisca.com/wp-content/uploads/2019/04/dia-mundial-de-la-salud-1000x600.jpg", "fondo");
+    //private Image imagen = new Image("https://www.tododisca.com/wp-content/uploads/2019/04/dia-mundial-de-la-salud-1000x600.jpg", "fondo");
 
     public InicioView() {
-        H1 titulo = new H1("Bienvenido/a a Automatic Food List");
+        H1 titulo = new H1("Bienvenido/a a Cromuca");
 
         if (SecurityUtils.isUserLoggedIn()) {
-            Label configuracionTexto = new Label("Configuración dietética");
+            /*Label configuracionTexto = new Label("Configuración dietética");
             Label listaComidaTexto = new Label("Lista de comidas");
             Label listaCompraTexto = new Label("Lista de la compra");
 
@@ -44,7 +43,7 @@ public class InicioView extends VerticalLayout {
             VerticalLayout main = new VerticalLayout(titulo, contenido, imagen);
             setAlignItems(Alignment.CENTER);
             add(main);
-            main.setAlignItems(Alignment.CENTER);
+            main.setAlignItems(Alignment.CENTER);*/
         } else {
             Label loginTexto = new Label("Inicia sesión");
             Label registroTexto = new Label("Regístrate");
@@ -55,7 +54,7 @@ public class InicioView extends VerticalLayout {
             VerticalLayout loginLay = new VerticalLayout(loginTexto, login);
             registrateLay.setAlignItems(Alignment.CENTER);
             HorizontalLayout contenido = new HorizontalLayout(registrateLay, loginLay);
-            VerticalLayout main = new VerticalLayout(titulo, contenido, imagen);
+            VerticalLayout main = new VerticalLayout(titulo, contenido/*, imagen*/);
             loginLay.setAlignItems(Alignment.CENTER);
             contenido.setAlignItems(Alignment.CENTER);
             main.setAlignItems(Alignment.CENTER);
