@@ -58,7 +58,7 @@ public class MainView extends AppLayout {
                 tabs.add(createTab(VaadinIcon.RECORDS, "Gestión Categoria", CategoriaTaxonomicaGestionView.class));
                 tabs.add(createTab(VaadinIcon.RECORDS, "Gestión Familia", FamiliaGestionView.class));
                 tabs.add(createTab(VaadinIcon.RECORDS, "Gestión Genero", GeneroGestionView.class));
-                //tabs.add(createTab(VaadinIcon.RECORDS, "Gestión valores nutricionales", ValoresNutrcionalesView.class));
+                tabs.add(createTab(VaadinIcon.RECORDS, "Clasificacion", ClasificacionView.class));
             }
         }
         addToDrawer(menuLayout, tabs); //anadirlo al desplegable

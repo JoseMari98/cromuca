@@ -26,7 +26,7 @@ public class PhylumGestionView extends AbstractView {
         this.form = new PhylumGestionForm(this, generoService, especieService, familiaService, categoriaTaxonomicaService, phylumService);
         this.phylumService = phylumService;
 
-        filterText.setPlaceholder("Filtrar por tipo"); //poner el campo
+        filterText.setPlaceholder("Filtrar por phylum"); //poner el campo
         filterText.setClearButtonVisible(true); //poner la cruz para borrar
         filterText.setValueChangeMode(ValueChangeMode.EAGER); //que se hagan los cambios cuando se escriba
         filterText.addValueChangeListener(event -> {
@@ -34,11 +34,11 @@ public class PhylumGestionView extends AbstractView {
                 updateList();
             else {
                 filterText.clear();
-                Notification.show("No hay ningun vehiculo con esa matricula", 2000, Notification.Position.MIDDLE);
+                Notification.show("No hay ningún phylum con ese nombre", 2000, Notification.Position.MIDDLE);
             }
 
         });
-        Button addModeloBtn = new Button("Añade un tipo");
+        Button addModeloBtn = new Button("Añade un phylum");
         addModeloBtn.addClickListener(e -> {
             grid.asSingleSelect().clear(); //clear para que borre si habia algo antes
             form.setPhylum(new Phylum()); //instancia un nuevo customer

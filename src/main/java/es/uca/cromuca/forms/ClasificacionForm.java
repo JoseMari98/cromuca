@@ -1,126 +1,195 @@
-/*package es.uca.cromuca.forms;
+package es.uca.cromuca.forms;
 
 import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
+import com.vaadin.flow.component.checkbox.Checkbox;
+import com.vaadin.flow.component.combobox.ComboBox;
+import com.vaadin.flow.component.datepicker.DatePicker;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.notification.Notification;
+import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
+import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.EmailField;
 import com.vaadin.flow.component.textfield.PasswordField;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.BeanValidationBinder;
 import com.vaadin.flow.data.validator.EmailValidator;
-import es.uca.cromuca.entities.Usuario;
-import es.uca.cromuca.services.UsuarioService;
+import es.uca.cromuca.entities.*;
+import es.uca.cromuca.services.*;
+import es.uca.cromuca.views.ClasificacionView;
+import es.uca.cromuca.views.Gestion.FamiliaGestionView;
+
+import java.time.LocalDate;
 
 public class ClasificacionForm extends FormLayout {
-    private
-    private
-    private
-    private
-    private
-    private
-    private BeanValidationBinder<Usuario> binder = new BeanValidationBinder<>(Usuario.class);
-    private UsuarioService usuarioService;
+    private Button comprobar = new Button("Buscar");
+    private Button addThingsPhylum = new Button("+");
+    private Button addThingsCategoria = new Button("+");
+    private Button addThingsFamilia = new Button("+");
+    private Button addThingsGenero = new Button("+");
+    private Label numeroCatalogoLabel = new Label("Núm. Catálogo (forma XXXX-XX)");
+    private Label phylumLabel = new Label("Phylum");
+    private Label categoriaLabel = new Label("Categoria tax. ppal.");
+    private Label familiaLabel = new Label("Familia");
+    private Label generoLabel = new Label("Género");
+    private TextField numeroCatalogo = new TextField();
+    private TextField autorAno = new TextField("Autor y año");
+    private TextField especie = new TextField("Especie");
+    private DatePicker fechaAlta = new DatePicker("Fecha alta");
+    private ComboBox<Genero> genero = new ComboBox<>();
+    private ComboBox<Familia> familia = new ComboBox<>();
+    private ComboBox<CategoriaTaxonomicaPpal> categoriaTaxonomicaPpal = new ComboBox<>();
+    private ComboBox<Phylum> phylum = new ComboBox<>();
+    private Checkbox nuevo = new Checkbox("Nuevo registro");
+    private EspecieService especieService;
+    private GeneroService generoService;
+    private FamiliaService familiaService;
+    private PhylumService phylumService;
+    private CategoriaTaxonomicaService categoriaTaxonomicaService;
+    private ClasificacionView clasificacionView;
+    private Especie especieCreada;
     private Button save = new Button("Continuar");
-    private Usuario usuario;
 
-    public ClasificacionForm(UsuarioService usuarioService) {
-        if (UI.getCurrent().getSession().getAttribute(Usuario.class) != null) {
-            usuario = usuarioService.listarPorUsername(UI.getCurrent().getSession().getAttribute(Usuario.class).getUsername());
-            usuario.setPassword("");
-            confirmPassword.setValue("");
-            binder.setBean(usuario);
-        } else
-            usuario = new Usuario();
-        this.usuarioService = usuarioService;
+    public ClasificacionForm(ClasificacionView clasificacionView, GeneroService generoService, EspecieService especieService, FamiliaService familiaService,
+                             CategoriaTaxonomicaService categoriaTaxonomicaService, PhylumService phylumService) {
+        this.generoService = generoService;
+        this.especieService = especieService;
+        this.familiaService = familiaService;
+        this.phylumService = phylumService;
+        this.categoriaTaxonomicaService = categoriaTaxonomicaService;
+        this.clasificacionView = clasificacionView;
 
-        nombre.setRequired(true);
-        apellido.setRequired(true);
-        email.setRequiredIndicatorVisible(true);
-        password.setRequired(true);
-        confirmPassword.setRequired(true);
-        username.setRequired(true);
-        username.addValueChangeListener(e -> {
-            if(usuarioService.listarPorUsername(username.getValue()) != null && usuario == null) {
-                username.clear();
-                Notification.show("Usuario repetido", 3000, Notification.Position.MIDDLE);
-            } else {
-                if(usuarioService.listarPorUsername(username.getValue()) != null && usuario != null && !usuarioService.listarPorUsername(username.getValue()).getId().equals(usuario.getId())) {
-                    username.clear();
-                    Notification.show("Usuario repetido", 3000, Notification.Position.MIDDLE);
-                }
-            }
-        });
-        email.addValueChangeListener(e -> {
-            if(usuarioService.listarPorEmail(email.getValue()) != null && usuario == null) {
-                email.clear();
-                Notification.show("Email repetido", 3000, Notification.Position.MIDDLE);
-            } else {
-                if(usuarioService.listarPorEmail(email.getValue()) != null && usuario != null && !usuarioService.listarPorEmail(email.getValue()).getId().equals(usuario.getId())) {
-                    email.clear();
-                    Notification.show("Email repetido", 3000, Notification.Position.MIDDLE);
-                }
-            }
-        });
         save.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
-        add(username, nombre, apellido, email, password, confirmPassword, save);
-        save.addClickShortcut(Key.ENTER);
+        comprobar.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
 
-        binder.bindInstanceFields(this);
-
-
-        Dialog dialog = new Dialog();
-        Label label = new Label("¿Están correctos tus datos?");
-
-        Button confirmButton = new Button("Confirmar", event -> {
-            try {
-                save();
-            } catch (Exception e) {
-                e.printStackTrace();
+        phylum.setRequired(true);
+        phylum.setItems(phylumService.findAll());
+        phylum.setItemLabelGenerator(Phylum::getPhylum);
+        phylum.addValueChangeListener(e -> {
+            if(phylum.getValue() != null){
+                categoriaTaxonomicaPpal.setRequired(true);
+                categoriaTaxonomicaPpal.setItems(categoriaTaxonomicaService.findByPhylum(phylum.getValue()));
+                categoriaTaxonomicaPpal.setItemLabelGenerator(CategoriaTaxonomicaPpal::getCategoriaTaxonomicaPpal);
             }
-            dialog.close();
         });
-        confirmButton.addThemeVariants(ButtonVariant.LUMO_SUCCESS);
-        Button cancelButton = new Button("Cancelar", event -> dialog.close());
-        dialog.add(label, confirmButton, cancelButton);
-        cancelButton.addThemeVariants(ButtonVariant.LUMO_ERROR);
-        save.addClickListener(event -> dialog.open());
-        confirmButton.addClickShortcut(Key.ENTER);
+        categoriaTaxonomicaPpal.addValueChangeListener(e -> {
+            if(categoriaTaxonomicaPpal.getValue() != null){
+                familia.setRequired(true);
+                familia.setItems(familiaService.findByCategoria(categoriaTaxonomicaPpal.getValue()));
+                familia.setItemLabelGenerator(Familia::getFamilia);
+            }
+        });
+        familia.addValueChangeListener(e -> {
+           if(familia.getValue() != null){
+               genero.setRequired(true);
+               genero.setItems(generoService.findByFamilia(familia.getValue()));
+               genero.setItemLabelGenerator(Genero::getGenero);
+           }
+        });
+
+        nuevo.addClickListener(e -> {
+            if(nuevo.getValue()){
+                if(especieService.findLastid() == null){ //no hay ninguno insertado
+                    numeroCatalogo.setValue("0000-01");
+                } else{ //hay insertado
+                    Long nuevoId = especieService.findLastid().getId() + 1;
+                    switch(especieService.findLastid().getId().toString().length()){
+                        case 1: numeroCatalogo.setValue("000" + nuevoId.toString() + "-01"); break;
+                        case 2: numeroCatalogo.setValue("00" + nuevoId.toString() + "-01"); break;
+                        case 3: numeroCatalogo.setValue("0" + nuevoId.toString() + "-01"); break;
+                        case 4: numeroCatalogo.setValue(nuevoId.toString() + "-01"); break;
+                    }
+                }
+                numeroCatalogo.setEnabled(false);
+                fechaAlta.setValue(LocalDate.now());
+            } else{
+                numeroCatalogo.setValue("");
+                numeroCatalogo.setEnabled(true);
+            }
+        });
+        addThingsPhylum.addClickListener(e -> {
+            UI.getCurrent().navigate("GestionPhylum");
+        });
+        addThingsCategoria.addClickListener(e -> {
+            UI.getCurrent().navigate("GestionCategoria");
+        });
+        addThingsFamilia.addClickListener(e -> {
+            UI.getCurrent().navigate("GestionFamilia");
+        });
+        addThingsGenero.addClickListener(e -> {
+            UI.getCurrent().navigate("GestionGenero");
+        });
+        comprobar.addClickListener(e -> {
+            if(especieService.findByNumCatalogo(numeroCatalogo.getValue()) != null){
+                especieCreada = especieService.findByNumCatalogo(numeroCatalogo.getValue());
+                especie.setValue(especieCreada.getEspecie());
+                autorAno.setValue(especieCreada.getAutorAno());
+                fechaAlta.setValue(especieCreada.getFechaAlta());
+                numeroCatalogo.setValue(especieCreada.getNumeroCatalogo());
+
+                Genero generoAux = especieCreada.getGenero();
+
+                Familia familiaAux = generoService.buscarId(generoAux.getId()).get().getFamilia();
+
+                CategoriaTaxonomicaPpal categoriaAux = familiaService.buscarId(familiaAux.getId()).get().getCategoriaTaxonomicaPpal();
+
+                phylum.setValue(categoriaTaxonomicaService.buscarId(categoriaAux.getId()).get().getPhylum());
+
+                categoriaTaxonomicaPpal.setValue(categoriaAux);
+                familia.setValue(familiaAux);
+                genero.setValue(generoAux);
+            }
+            else{
+                Notification.show("Numero no existe", 3000, Notification.Position.MIDDLE);
+                numeroCatalogo.setValue("");
+            }
+        });
+        HorizontalLayout numeroCatalogoLay = new HorizontalLayout(numeroCatalogoLabel, numeroCatalogo, comprobar, nuevo);
+        HorizontalLayout phylumLay = new HorizontalLayout(phylumLabel, phylum, addThingsPhylum);
+        HorizontalLayout categoriaLay = new HorizontalLayout(categoriaLabel, categoriaTaxonomicaPpal, addThingsCategoria);
+        HorizontalLayout familiaLay = new HorizontalLayout(familiaLabel, familia, addThingsFamilia);
+        HorizontalLayout generoLay = new HorizontalLayout(generoLabel, genero, addThingsGenero);
+        HorizontalLayout especieLay = new HorizontalLayout(especie, autorAno, fechaAlta);
+        VerticalLayout izq = new VerticalLayout(numeroCatalogoLay, categoriaLay, generoLay);
+        VerticalLayout dcha = new VerticalLayout(phylumLay, familiaLay, especieLay, save);
+
+        add(izq, dcha);
+        //save.addClickShortcut(Key.ENTER);
+        save.addClickListener(event -> save());
     }
 
-    public void save() throws Exception {
-        binder.forField(email)
-                // Explicit validator instance
-                .withValidator(new EmailValidator(
-                        "No es un formato válido. Ejemplo de formato válido: usuario@gmail.com"))
-                .bind(Usuario::getEmail, Usuario::setEmail);
-        if(binder.validate().isOk()) {
-            if(password.getValue().equals(confirmPassword.getValue())){
-                usuario.setRole("User");
-                usuario.setUsername(username.getValue());
-                usuario.setNombre(nombre.getValue());
-                usuario.setApellido(apellido.getValue());
-                usuario.setEmail(email.getValue());
-                usuario.setPassword(password.getValue());
-                usuarioService.create(usuario);
-                if(UI.getCurrent().getSession().getAttribute(Usuario.class) != null) {
-                    Notification.show("Modificado con éxito", 3000, Notification.Position.MIDDLE);
-                    UI.getCurrent().getSession().setAttribute(Usuario.class, usuario);
-                    UI.getCurrent().navigate("");
-                } else {
-                    Notification.show("Registrado con éxito", 3000, Notification.Position.MIDDLE);
-                    UI.getCurrent().navigate("Login");
-                }
+    public void save(){
+        if(nuevo.getValue()){
+            if(!numeroCatalogo.getValue().isEmpty() && phylum.getValue() != null && categoriaTaxonomicaPpal.getValue() != null &&
+                    familia.getValue() != null && genero.getValue() != null && !especie.getValue().isEmpty() &&
+                    !autorAno.getValue().isEmpty() && fechaAlta.getValue() != null){
+                Especie e = new Especie();
+                e.setEspecie(especie.getValue());
+                e.setAutorAno(autorAno.getValue());
+                e.setFechaAlta(fechaAlta.getValue());
+                e.setNumeroCatalogo(numeroCatalogo.getValue());
+                e.setGenero(genero.getValue());
+                especieService.guardar(e);
             } else
-                Notification.show("Las constraseñas no coinciden", 5000, Notification.Position.MIDDLE);
+                Notification.show("Comprueba tus datos", 3000, Notification.Position.MIDDLE);
+        } else{
+            if(!numeroCatalogo.getValue().isEmpty() && phylum.getValue() != null && categoriaTaxonomicaPpal.getValue() != null &&
+                    familia.getValue() != null && genero.getValue() != null && !especie.getValue().isEmpty() &&
+                    !autorAno.getValue().isEmpty() && fechaAlta.getValue() != null){
+                especieCreada.setEspecie(especie.getValue());
+                especieCreada.setAutorAno(autorAno.getValue());
+                especieCreada.setFechaAlta(fechaAlta.getValue());
+                especieCreada.setNumeroCatalogo(numeroCatalogo.getValue());
+                especieCreada.setGenero(genero.getValue());
+                especieService.guardar(especieCreada);
+            } else
+                Notification.show("Comprueba tus datos", 3000, Notification.Position.MIDDLE);
         }
-        else {
-            Notification.show("Rellene los campos", 5000, Notification.Position.MIDDLE);
-        }
+
+        Notification.show("Guardado con éxito", 3000, Notification.Position.MIDDLE);
     }
 }
-*/

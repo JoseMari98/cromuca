@@ -22,7 +22,7 @@ public class CategoriaTaxonomicaService {
         return categoriaTaxonomicaRepository.save(entrada);
     }
 
-    public Optional<CategoriaTaxonomicaPpal> buscarIdModelo(Long id) {
+    public Optional<CategoriaTaxonomicaPpal> buscarId(Long id) {
         return categoriaTaxonomicaRepository.findById(id);
     }
 

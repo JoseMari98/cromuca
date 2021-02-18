@@ -28,7 +28,7 @@ public class GeneroGestionView extends AbstractView {
         this.form = new GeneroGestionForm(this, generoService, especieService, familiaService);
         this.generoService = generoService;
 
-        filterText.setPlaceholder("Filtrar por tipo"); //poner el campo
+        filterText.setPlaceholder("Filtrar por género"); //poner el campo
         filterText.setClearButtonVisible(true); //poner la cruz para borrar
         filterText.setValueChangeMode(ValueChangeMode.EAGER); //que se hagan los cambios cuando se escriba
         filterText.addValueChangeListener(event -> {
@@ -36,11 +36,11 @@ public class GeneroGestionView extends AbstractView {
                 updateList();
             else {
                 filterText.clear();
-                Notification.show("No hay ningun vehiculo con esa matricula", 2000, Notification.Position.MIDDLE);
+                Notification.show("No hay ningún género con ese nombre", 2000, Notification.Position.MIDDLE);
             }
 
         });
-        Button addModeloBtn = new Button("Añade un tipo");
+        Button addModeloBtn = new Button("Añade un género");
         addModeloBtn.addClickListener(e -> {
             grid.asSingleSelect().clear(); //clear para que borre si habia algo antes
             form.setGenero(new Genero()); //instancia un nuevo customer

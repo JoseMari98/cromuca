@@ -21,7 +21,7 @@ public class PhylumService {
         return phylumRepository.save(entrada);
     }
 
-    public Optional<Phylum> buscarIdModelo(Long id) {
+    public Optional<Phylum> buscarId(Long id) {
         return phylumRepository.findById(id);
     }
 

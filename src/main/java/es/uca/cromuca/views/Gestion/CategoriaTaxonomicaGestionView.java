@@ -26,7 +26,7 @@ public class CategoriaTaxonomicaGestionView extends AbstractView {
         this.form = new CategoriaTaxonomicaGestionForm(this, generoService, especieService, familiaService, categoriaTaxonomicaService, phylumService);
         this.categoriaTaxonomicaService = categoriaTaxonomicaService;
 
-        filterText.setPlaceholder("Filtrar por tipo"); //poner el campo
+        filterText.setPlaceholder("Filtrar por categoría"); //poner el campo
         filterText.setClearButtonVisible(true); //poner la cruz para borrar
         filterText.setValueChangeMode(ValueChangeMode.EAGER); //que se hagan los cambios cuando se escriba
         filterText.addValueChangeListener(event -> {
@@ -34,11 +34,11 @@ public class CategoriaTaxonomicaGestionView extends AbstractView {
                 updateList();
             else {
                 filterText.clear();
-                Notification.show("No hay ningun vehiculo con esa matricula", 2000, Notification.Position.MIDDLE);
+                Notification.show("No hay ninguna cateogoría con ese nombre", 2000, Notification.Position.MIDDLE);
             }
 
         });
-        Button addModeloBtn = new Button("Añade un tipo");
+        Button addModeloBtn = new Button("Añade una categoría");
         addModeloBtn.addClickListener(e -> {
             grid.asSingleSelect().clear(); //clear para que borre si habia algo antes
             form.setCategoriaTaxonomicaPpal(new CategoriaTaxonomicaPpal()); //instancia un nuevo customer

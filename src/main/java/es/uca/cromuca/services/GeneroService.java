@@ -22,7 +22,7 @@ public class GeneroService {
         return generoRepository.save(entrada);
     }
 
-    public Optional<Genero> buscarIdModelo(Long id) {
+    public Optional<Genero> buscarId(Long id) {
         return generoRepository.findById(id);
     }
 

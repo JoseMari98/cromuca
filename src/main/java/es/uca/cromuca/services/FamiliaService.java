@@ -22,7 +22,7 @@ public class FamiliaService {
         return familiaRepository.save(entrada);
     }
 
-    public Optional<Familia> buscarIdModelo(Long id) {
+    public Optional<Familia> buscarId(Long id) {
         return familiaRepository.findById(id);
     }
 

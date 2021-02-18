@@ -22,7 +22,7 @@ public class EspecieService {
         return especieRepository.save(entrada);
     }
 
-    public Optional<Especie> buscarIdModelo(Long id) {
+    public Optional<Especie> buscarId(Long id) {
         return especieRepository.findById(id);
     }
 
@@ -36,5 +36,13 @@ public class EspecieService {
 
     public List<Especie> findByGenero(Genero entrada) {
         return especieRepository.findByGenero(entrada);
+    }
+
+    public Especie findLastid() {
+        return especieRepository.findTopByOrderByIdDesc();
+    }
+
+    public  Especie findByNumCatalogo(String numeroCatalogo){
+        return especieRepository.findByNumeroCatalogo(numeroCatalogo);
     }
 }
