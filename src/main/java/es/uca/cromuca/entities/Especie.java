@@ -3,6 +3,7 @@ package es.uca.cromuca.entities;
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import java.time.LocalDate;
+import java.util.Set;
 
 @Entity
 public class Especie {
@@ -14,6 +15,8 @@ public class Especie {
     private LocalDate fechaAlta;
     @ManyToOne
     private Genero genero;
+    @OneToMany(mappedBy = "id")
+    private Set<DatosMuestreo> datosMuestreoSet;
 
     public Long getId() {
         return id;
