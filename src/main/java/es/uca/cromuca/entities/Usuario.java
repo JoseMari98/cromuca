@@ -7,7 +7,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 @Entity
 public class Usuario implements UserDetails {
@@ -15,30 +17,15 @@ public class Usuario implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @NotEmpty(message = "Este campo es obligatorio")
-    private String nombre = "", apellido = "", password = "";
+    private String password = "";
     @NotEmpty(message = "Este campo es obligatorio")
     @Column(unique = true)
     private String username = "";
-    @NotEmpty(message = "Este campo es obligatorio")
-    @Column(unique = true)
-    private String email = "";
     private String role = "";
 
     //Getters
     public Long getId() {
         return id;
-    }
-
-    public String getApellido() {
-        return apellido;
-    }
-
-    public String getNombre() {
-        return nombre;
-    }
-
-    public String getEmail() {
-        return email;
     }
 
     public String getRole() {
@@ -48,18 +35,6 @@ public class Usuario implements UserDetails {
     //Setters
     public void setId(Long Id) {
         this.id = Id;
-    }
-
-    public void setApellido(String Apellido1) {
-        this.apellido = Apellido1;
-    }
-
-    public void setNombre(String Nombre) {
-        this.nombre = Nombre;
-    }
-
-    public void setEmail(String Email) {
-        this.email = Email;
     }
 
     public void setPassword(String Contrasena) {

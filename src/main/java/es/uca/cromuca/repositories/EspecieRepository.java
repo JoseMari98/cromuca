@@ -8,6 +8,12 @@ import java.util.List;
 
 public interface EspecieRepository extends JpaRepository<Especie, Long> {
     List<Especie> findByGenero(Genero genero);
+
     Especie findTopByOrderByIdDesc();
-    Especie findByNumeroCatalogo(String numeroCatalogo);
+
+    Especie findByNumeroCatalogoAndNumeroFrasco(String numeroCatalogo, String numeroFrasco);
+
+    List<Especie> findAllByOrderByNumeroCatalogoDesc();
+
+    List<Especie> findByNumeroCatalogoOrderByNumeroFrascoDesc(String numeroCatalogo);
 }

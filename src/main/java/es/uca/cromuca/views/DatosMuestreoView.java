@@ -1,4 +1,4 @@
-package es.uca.cromuca.views;
+/*package es.uca.cromuca.views;
 
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -24,3 +24,4 @@ public class DatosMuestreoView extends AbstractView {
         setSizeFull();
     }
 }
+*/

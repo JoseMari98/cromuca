@@ -11,12 +11,14 @@ public class Especie {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @NotEmpty(message = "Este campo es obligatorio")
-    private String especie = "", autorAno = "", numeroCatalogo = "";
+    private String especie = "", autorAno = "", numeroCatalogo = "", numeroFrasco = "";
     private LocalDate fechaAlta;
     @ManyToOne
     private Genero genero;
     @OneToMany(mappedBy = "id")
     private Set<DatosMuestreo> datosMuestreoSet;
+    @OneToMany(mappedBy = "id")
+    private Set<Ejemplares> ejemplaresSet;
 
     public Long getId() {
         return id;
@@ -24,6 +26,22 @@ public class Especie {
 
     public String getNumeroCatalogo() {
         return numeroCatalogo;
+    }
+
+    public void setDatosMuestreoSet(Set<DatosMuestreo> datosMuestreoSet) {
+        this.datosMuestreoSet = datosMuestreoSet;
+    }
+
+    public Set<DatosMuestreo> getDatosMuestreoSet() {
+        return datosMuestreoSet;
+    }
+
+    public String getNumeroFrasco() {
+        return numeroFrasco;
+    }
+
+    public void setNumeroFrasco(String numeroFrasco) {
+        this.numeroFrasco = numeroFrasco;
     }
 
     public LocalDate getFechaAlta() {

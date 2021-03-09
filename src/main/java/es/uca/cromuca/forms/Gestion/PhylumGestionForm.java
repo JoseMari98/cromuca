@@ -1,6 +1,7 @@
 package es.uca.cromuca.forms.Gestion;
 
 import com.vaadin.flow.component.Key;
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.formlayout.FormLayout;
@@ -14,8 +15,9 @@ import es.uca.cromuca.views.Gestion.PhylumGestionView;
 
 public class PhylumGestionForm extends FormLayout {
     private TextField phylum = new TextField("Phylum");
-    private Button save = new Button("Añadir");
+    private Button save = new Button("Guardar");
     private Button delete = new Button("Borrar");
+    private Button volver = new Button("Volver");
     private PhylumGestionView phylumGestionView;
     private Binder<Phylum> binder = new Binder<>(Phylum.class);
     private EspecieService especieService;
@@ -33,13 +35,18 @@ public class PhylumGestionForm extends FormLayout {
         this.categoriaTaxonomicaService = categoriaTaxonomicaService;
         this.phylumGestionView = phylumGestionView;
 
-        HorizontalLayout buttons = new HorizontalLayout(save, delete);
+        HorizontalLayout buttons = new HorizontalLayout(save, delete, volver);
+        volver.addThemeVariants(ButtonVariant.LUMO_ERROR);
         save.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         add(phylum, buttons);
         phylum.setRequired(true);
         save.addClickShortcut(Key.ENTER);
 
         binder.bindInstanceFields(this);
+
+        volver.addClickListener(e -> {
+            UI.getCurrent().navigate("ClasificacionView");
+        });
 
         save.addClickListener(event -> {
             if (binder.getBean() != null)

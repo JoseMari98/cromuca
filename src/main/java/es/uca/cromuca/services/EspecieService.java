@@ -42,7 +42,21 @@ public class EspecieService {
         return especieRepository.findTopByOrderByIdDesc();
     }
 
-    public  Especie findByNumCatalogo(String numeroCatalogo){
-        return especieRepository.findByNumeroCatalogo(numeroCatalogo);
+    public Especie findByNumCatalogoAndFrasco(String numeroCatalogo, String numeroFrasco) {
+        return especieRepository.findByNumeroCatalogoAndNumeroFrasco(numeroCatalogo, numeroFrasco);
+    }
+
+    public String nuevoNumero() {
+        List<Especie> especieList = especieRepository.findAllByOrderByNumeroCatalogoDesc();
+        Especie first = especieList.iterator().next();
+
+        return first.getNumeroCatalogo();
+    }
+
+    public String nuevoFrasco(String numeroCatalogo) {
+        List<Especie> especieList = especieRepository.findByNumeroCatalogoOrderByNumeroFrascoDesc(numeroCatalogo);
+        Especie first = especieList.iterator().next();
+
+        return first.getNumeroFrasco();
     }
 }

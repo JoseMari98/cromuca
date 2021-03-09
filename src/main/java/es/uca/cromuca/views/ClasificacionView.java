@@ -1,17 +1,12 @@
 package es.uca.cromuca.views;
 
-import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.Route;
-import es.uca.cromuca.entities.Usuario;
 import es.uca.cromuca.forms.ClasificacionForm;
-import es.uca.cromuca.forms.UsuarioDatosForm;
 import es.uca.cromuca.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.annotation.Secured;
 
-@Secured("Admin")
 @Route(value = "ClasificacionView", layout = MainView.class)
 public class ClasificacionView extends AbstractView{
     private ClasificacionForm clasificacionForm;

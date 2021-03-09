@@ -50,7 +50,6 @@ public class MainView extends AppLayout {
 
         if (!SecurityUtils.isUserLoggedIn()) {
             tabs.add(createTab(VaadinIcon.SIGN_IN, "Iniciar sesión", LoginView.class));
-            tabs.add(createTab(VaadinIcon.USER_CARD, "Regístrate", UsuarioDatosView.class));
         } else {
             //tabs.add(createTab(VaadinIcon.PLUS, "Crear receta", CrearRecetaView.class));
             if (SecurityUtils.hasRole("Admin")) {

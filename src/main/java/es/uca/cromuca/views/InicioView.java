@@ -46,10 +46,10 @@ public class InicioView extends VerticalLayout {
             main.setAlignItems(Alignment.CENTER);*/
         } else {
             Label loginTexto = new Label("Inicia sesión");
-            Label registroTexto = new Label("Regístrate");
+            Label registroTexto = new Label("Consultor");
 
             login.addClickListener(e -> UI.getCurrent().navigate("Login"));
-            registrate.addClickListener(e -> UI.getCurrent().navigate("UsuarioView"));
+            registrate.addClickListener(e -> UI.getCurrent().navigate(""));
             VerticalLayout registrateLay = new VerticalLayout(registroTexto, registrate);
             VerticalLayout loginLay = new VerticalLayout(loginTexto, login);
             registrateLay.setAlignItems(Alignment.CENTER);

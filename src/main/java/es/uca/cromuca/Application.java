@@ -32,10 +32,7 @@ public class Application extends SpringBootServletInitializer {
                 boolean valido = usuarioService.loadUserByUsername("admin").getRole().equals("Admin");
             } catch (UsernameNotFoundException e) {
                 Usuario u = new Usuario();
-                u.setNombre("admin");
                 u.setPassword("admin");
-                u.setApellido("admin");
-                u.setEmail("admin@admin.es");
                 u.setUsername("admin");
                 u.setRole("Admin");
                 usuarioService.create(u);
