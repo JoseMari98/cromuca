@@ -5,14 +5,12 @@ import es.uca.cromuca.entities.enums.FormaAlmacenamiento;
 import es.uca.cromuca.entities.enums.Formato;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotEmpty;
 
 @Entity
 public class Ejemplares {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @NotEmpty(message = "Este campo es obligatorio")
     private int machos = 0, hembrasAdultas = 0, hembrasOvig = 0, hermafroditas = 0, sinSexo = 0, juveniles = 0, frascosLote = 0;
     private boolean huevos, larvas;
     @Enumerated(EnumType.STRING)

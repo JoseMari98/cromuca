@@ -3,7 +3,6 @@ package es.uca.cromuca.entities;
 import es.uca.cromuca.entities.enums.*;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotEmpty;
 import java.time.LocalDate;
 
 @Entity
@@ -11,7 +10,6 @@ public class DatosMuestreo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @NotEmpty(message = "Este campo es obligatorio")
     private String latitud = "", longitud = "", localidad = "", colector = "";
     @Lob
     private String observaciones;
