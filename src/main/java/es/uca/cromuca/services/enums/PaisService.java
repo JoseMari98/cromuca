@@ -32,4 +32,8 @@ public class PaisService {
     public void borrar(Pais entrada) {
         paisRepository.delete(entrada);
     }
+
+    public List<Pais> findByPais(String nombre) {
+        return paisRepository.findByPaisStartsWithIgnoreCase(nombre);
+    }
 }

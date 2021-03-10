@@ -15,7 +15,9 @@ import es.uca.cromuca.services.GeneroService;
 import es.uca.cromuca.views.AbstractView;
 import es.uca.cromuca.views.MainView;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 
+@Secured("Admin")
 @Route(value = "GestionGenero", layout = MainView.class)
 public class GeneroGestionView extends AbstractView {
     private Grid<Genero> grid = new Grid<>(Genero.class);

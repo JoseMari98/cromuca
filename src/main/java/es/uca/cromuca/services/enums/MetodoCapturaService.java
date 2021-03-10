@@ -32,4 +32,8 @@ public class MetodoCapturaService {
     public void borrar(MetodoCaptura entrada) {
         metodoCapturaRepository.delete(entrada);
     }
+
+    public List<MetodoCaptura> findByMetodoCaptura(String nombre) {
+        return metodoCapturaRepository.findByMetodoCapturaStartsWithIgnoreCase(nombre);
+    }
 }

@@ -13,7 +13,9 @@ import es.uca.cromuca.services.*;
 import es.uca.cromuca.views.AbstractView;
 import es.uca.cromuca.views.MainView;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 
+@Secured("Admin")
 @Route(value = "GestionFamilia", layout = MainView.class)
 public class FamiliaGestionView extends AbstractView {
     private Grid<Familia> grid = new Grid<>(Familia.class);

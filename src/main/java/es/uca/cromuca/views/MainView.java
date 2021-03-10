@@ -19,11 +19,10 @@ import com.vaadin.flow.server.PWA;
 import com.vaadin.flow.theme.Theme;
 import com.vaadin.flow.theme.lumo.Lumo;
 import es.uca.cromuca.entities.Usuario;
+import es.uca.cromuca.services.*;
 import es.uca.cromuca.springclasses.SecurityUtils;
-import es.uca.cromuca.views.Gestion.CategoriaTaxonomicaGestionView;
-import es.uca.cromuca.views.Gestion.FamiliaGestionView;
-import es.uca.cromuca.views.Gestion.GeneroGestionView;
-import es.uca.cromuca.views.Gestion.PhylumGestionView;
+import es.uca.cromuca.views.Gestion.*;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * The main view contains a button and a click listener.
@@ -42,7 +41,8 @@ public class MainView extends AppLayout {
     final boolean touchOptimized = true;
     Button logout = new Button(new Icon(VaadinIcon.SIGN_OUT));
 
-    public MainView() throws InterruptedException {
+    @Autowired
+    public MainView(CategoriaTaxonomicaService categoriaTaxonomicaService, GeneroService generoService, EspecieService especieService, FamiliaService familiaService, PhylumService phylumService) throws InterruptedException {
         logout.addClickListener(e -> signOut());
         logout.addThemeVariants(ButtonVariant.LUMO_ERROR);
         tabs.setOrientation(Tabs.Orientation.VERTICAL);
@@ -57,6 +57,9 @@ public class MainView extends AppLayout {
                 tabs.add(createTab(VaadinIcon.RECORDS, "Gestión Categoria", CategoriaTaxonomicaGestionView.class));
                 tabs.add(createTab(VaadinIcon.RECORDS, "Gestión Familia", FamiliaGestionView.class));
                 tabs.add(createTab(VaadinIcon.RECORDS, "Gestión Genero", GeneroGestionView.class));
+                tabs.add(createTab(VaadinIcon.RECORDS, "Gestión Pais", PaisGestionView.class));
+                tabs.add(createTab(VaadinIcon.RECORDS, "Gestión Metodo Captura", MetodoCapturaGestionView.class));
+                tabs.add(createTab(VaadinIcon.RECORDS, "Gestión Tipo sustrato", TipoSustratoGestionView.class));
                 tabs.add(createTab(VaadinIcon.RECORDS, "Clasificacion", ClasificacionView.class));
             }
         }

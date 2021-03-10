@@ -32,4 +32,8 @@ public class TipoSustratoService {
     public void borrar(TipoSustrato entrada) {
         tipoSustratoRepository.delete(entrada);
     }
+
+    public List<TipoSustrato> findByTipoSustrato(String nombre) {
+        return tipoSustratoRepository.findByTipoSustratoStartsWithIgnoreCase(nombre);
+    }
 }
