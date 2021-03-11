@@ -61,10 +61,11 @@ public class MainView extends AppLayout {
                 tabs.add(createTab(VaadinIcon.RECORDS, "Gestión Metodo Captura", MetodoCapturaGestionView.class));
                 tabs.add(createTab(VaadinIcon.RECORDS, "Gestión Tipo sustrato", TipoSustratoGestionView.class));
                 tabs.add(createTab(VaadinIcon.RECORDS, "Clasificacion", ClasificacionView.class));
+                tabs.add(createTab(VaadinIcon.RECORDS, "DatosMuestreo", DatosMuestreoView.class));
             }
         }
         addToDrawer(menuLayout, tabs); //anadirlo al desplegable
-        addToNavbar(touchOptimized, drawerToggle); //anadirlo a la barra vertical
+        addToNavbar(touchOptimized, drawerToggle/*, createTab(VaadinIcon.HOME, "Inicio", InicioView.class)*/); //anadirlo a la barra vertical
         if (SecurityUtils.isUserLoggedIn()) {
             logout.getStyle().set("center", "auto");
             addToDrawer(logout);

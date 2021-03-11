@@ -71,6 +71,11 @@
 
     <dependencies>
         <dependency>
+            <groupId>sk.smartbase.component</groupId>
+            <artifactId>barcode-scanner</artifactId>
+            <version>1.0.1</version>
+        </dependency>
+        <dependency>
             <groupId>com.vaadin</groupId>
             <!-- Replace artifactId with vaadin-core to use only free components -->
             <artifactId>vaadin</artifactId>

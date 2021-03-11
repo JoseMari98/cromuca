@@ -4,6 +4,8 @@ import es.uca.cromuca.entities.enums.*;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.LinkedList;
+import java.util.List;
 
 @Entity
 public class DatosMuestreo {
@@ -18,9 +20,10 @@ public class DatosMuestreo {
     @ManyToOne
     private RegionMarina regionMarina;
     private LocalDate fechaCaptura;
-    private float profundidad;
-    @Enumerated(EnumType.STRING)
-    private TipoOrganismo tipoOrganismo;
+    private Double profundidad;
+    private String tipoOrganismo;
+    @ManyToOne
+    private TipoSustrato tipoSustrato;
     @Enumerated(EnumType.STRING)
     private ProcedenciaMaterial procedenciaMaterial;
     @ManyToOne
@@ -68,7 +71,7 @@ public class DatosMuestreo {
         return especie;
     }
 
-    public float getProfundidad() {
+    public Double getProfundidad() {
         return profundidad;
     }
 
@@ -120,7 +123,7 @@ public class DatosMuestreo {
         return observaciones;
     }
 
-    public TipoOrganismo getTipoOrganismo() {
+    public String getTipoOrganismo() {
         return tipoOrganismo;
     }
 
@@ -152,11 +155,29 @@ public class DatosMuestreo {
         this.procedenciaMaterial = procedenciaMaterial;
     }
 
-    public void setProfundidad(float profundidad) {
+    public void setProfundidad(Double profundidad) {
         this.profundidad = profundidad;
     }
 
-    public void setTipoOrganismo(TipoOrganismo tipoOrganismo) {
+    public TipoSustrato getTipoSustrato() {
+        return tipoSustrato;
+    }
+
+    public void setTipoSustrato(TipoSustrato tipoSustrato) {
+        this.tipoSustrato = tipoSustrato;
+    }
+
+    public void setTipoOrganismo(String tipoOrganismo) {
         this.tipoOrganismo = tipoOrganismo;
+    }
+
+    public static List<String> tiposOrganismosList() {
+        List<String> stringList = new LinkedList<>();
+
+        stringList.add("Adulto");
+        stringList.add("Adulto + Larva");
+        stringList.add("Larva");
+
+        return stringList;
     }
 }

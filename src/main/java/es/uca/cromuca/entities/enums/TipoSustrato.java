@@ -13,7 +13,7 @@ public class TipoSustrato {
     private Long id;
     @NotEmpty(message = "Este campo es obligatorio")
     private String tipoSustrato = "";
-    @OneToMany(mappedBy = "id")
+    @OneToMany(mappedBy = "tipoSustrato")
     private Set<DatosMuestreo> datosMuestreoSet;
 
     public Long getId() {
