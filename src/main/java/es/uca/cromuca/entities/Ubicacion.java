@@ -1,7 +1,5 @@
 package es.uca.cromuca.entities;
 
-import es.uca.cromuca.entities.enums.Estatus;
-
 import javax.persistence.*;
 import java.util.Set;
 
@@ -11,8 +9,7 @@ public class Ubicacion {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private int armario = 0, estante = 0, cajon = 0;
-    @Enumerated(EnumType.STRING)
-    private Estatus estatus;
+    private String estatus;
     @OneToMany(mappedBy = "ubicacion")
     private Set<Prestamo> prestamoSet;
 
@@ -32,7 +29,7 @@ public class Ubicacion {
         return id;
     }
 
-    public Estatus getEstatus() {
+    public String getEstatus() {
         return estatus;
     }
 
@@ -60,7 +57,7 @@ public class Ubicacion {
         this.estante = estante;
     }
 
-    public void setEstatus(Estatus estatus) {
+    public void setEstatus(String estatus) {
         this.estatus = estatus;
     }
 }

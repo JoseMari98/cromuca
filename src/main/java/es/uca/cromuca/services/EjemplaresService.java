@@ -1,6 +1,7 @@
 package es.uca.cromuca.services;
 
 import es.uca.cromuca.entities.Ejemplares;
+import es.uca.cromuca.entities.Especie;
 import es.uca.cromuca.repositories.EjemplaresRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,5 +32,9 @@ public class EjemplaresService {
 
     public void borrar(Ejemplares entrada) {
         ejemplaresRepository.delete(entrada);
+    }
+
+    public Ejemplares findByEspecie(Especie especie) {
+        return ejemplaresRepository.findByEspecie(especie);
     }
 }

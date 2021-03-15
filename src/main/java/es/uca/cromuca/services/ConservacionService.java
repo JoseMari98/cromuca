@@ -1,6 +1,7 @@
 package es.uca.cromuca.services;
 
 import es.uca.cromuca.entities.Conservacion;
+import es.uca.cromuca.entities.Especie;
 import es.uca.cromuca.repositories.ConservacionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,5 +32,9 @@ public class ConservacionService {
 
     public void borrar(Conservacion entrada) {
         conservacionRepository.delete(entrada);
+    }
+
+    public Conservacion findByEspecie(Especie especie) {
+        return conservacionRepository.findByEspecie(especie);
     }
 }

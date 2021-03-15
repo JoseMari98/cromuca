@@ -15,10 +15,28 @@ public class Especie {
     private LocalDate fechaAlta;
     @ManyToOne
     private Genero genero;
-    @OneToMany(mappedBy = "id")
+    @OneToMany(mappedBy = "especie")
     private Set<DatosMuestreo> datosMuestreoSet;
-    @OneToMany(mappedBy = "id")
+    @OneToMany(mappedBy = "especie")
     private Set<Ejemplares> ejemplaresSet;
+    @OneToMany(mappedBy = "especie")
+    private Set<Conservacion> conservacionSet;
+
+    public Set<Ejemplares> getEjemplaresSet() {
+        return ejemplaresSet;
+    }
+
+    public void setEjemplaresSet(Set<Ejemplares> ejemplaresSet) {
+        this.ejemplaresSet = ejemplaresSet;
+    }
+
+    public Set<Conservacion> getConservacionSet() {
+        return conservacionSet;
+    }
+
+    public void setConservacionSet(Set<Conservacion> conservacionSet) {
+        this.conservacionSet = conservacionSet;
+    }
 
     public Long getId() {
         return id;

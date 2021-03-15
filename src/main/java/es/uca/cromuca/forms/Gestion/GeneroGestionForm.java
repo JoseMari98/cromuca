@@ -19,7 +19,7 @@ import es.uca.cromuca.services.GeneroService;
 import es.uca.cromuca.views.Gestion.GeneroGestionView;
 
 public class GeneroGestionForm extends FormLayout {
-    private TextField genero = new TextField("Modelo");
+    private TextField genero = new TextField("Género");
     private ComboBox<Familia> familia = new ComboBox<>("Familia");
     private Button save = new Button("Guardar");
     private Button delete = new Button("Borrar");

@@ -27,11 +27,6 @@ public class DatosMuestreoForm extends FormLayout {
     private Button addThingsPais = new Button("+");
     private Button addThingsTipoSustrato = new Button("+");
     private Button addThingsMetodoCaptura = new Button("+");
-    /*private Label numeroCatalogoLabel = new Label("Núm. Catálogo");
-    private Label phylumLabel = new Label("Phylum");
-    private Label categoriaLabel = new Label("Categoria tax. ppal.");
-    private Label familiaLabel = new Label("Familia");
-    private Label generoLabel = new Label("Género");*/
     private TextField numeroCatalogo = new TextField("Num. catálogo");
     private TextField numeroFrasco = new TextField();
     private TextField localidad = new TextField("Localidad");
@@ -79,33 +74,25 @@ public class DatosMuestreoForm extends FormLayout {
         save.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         comprobar.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
 
-        tipoSustrato.setRequired(true);
         tipoSustrato.setItems(tipoSustratoService.findAll());
         tipoSustrato.setItemLabelGenerator(TipoSustrato::getTipoSustrato);
 
-        metodoCaptura.setRequired(true);
         metodoCaptura.setItems(metodoCapturaService.findAll());
         metodoCaptura.setItemLabelGenerator(MetodoCaptura::getMetodoCaptura);
 
-        pais.setRequired(true);
         pais.setItems(paisService.findAll());
         pais.setItemLabelGenerator(Pais::getPais);
 
-        tipoOrganismo.setRequired(true);
         tipoOrganismo.setItems(DatosMuestreo.tiposOrganismosList());
 
-        procedenciaMaterial.setRequired(true);
         procedenciaMaterial.setItems(ProcedenciaMaterial.values());
 
-        regionBiogeografica.setRequired(true);
         regionBiogeografica.setItems(regionBiogeograficaService.findAll());
         regionBiogeografica.setItemLabelGenerator(RegionBiogeografica::getRegionBiogeografica);
 
-        regionMarina.setRequired(true);
         regionMarina.setItems(regionMarinaService.findAll());
         regionMarina.setItemLabelGenerator(RegionMarina::getRegionMarina);
 
-        habitat.setRequired(true);
         habitat.setItems(habitatService.findAll());
         habitat.setItemLabelGenerator(Habitat::getHabitat);
 

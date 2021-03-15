@@ -62,6 +62,8 @@ public class MainView extends AppLayout {
                 tabs.add(createTab(VaadinIcon.RECORDS, "Gestión Tipo sustrato", TipoSustratoGestionView.class));
                 tabs.add(createTab(VaadinIcon.RECORDS, "Clasificacion", ClasificacionView.class));
                 tabs.add(createTab(VaadinIcon.RECORDS, "DatosMuestreo", DatosMuestreoView.class));
+                tabs.add(createTab(VaadinIcon.RECORDS, "Ejemplares", EjemplaresView.class));
+                tabs.add(createTab(VaadinIcon.RECORDS, "Conservacion", ConservacionView.class));
             }
         }
         addToDrawer(menuLayout, tabs); //anadirlo al desplegable

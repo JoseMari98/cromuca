@@ -1,10 +1,8 @@
 package es.uca.cromuca.entities;
 
-import es.uca.cromuca.entities.enums.ConservanteActual;
-import es.uca.cromuca.entities.enums.Fijador;
-import es.uca.cromuca.entities.enums.Narcotizacion;
-
 import javax.persistence.*;
+import java.util.LinkedList;
+import java.util.List;
 
 @Entity
 public class Conservacion {
@@ -14,14 +12,13 @@ public class Conservacion {
     @Lob
     private String incidencias = "", historial = "";
     private boolean estudiosGeneticos;
+    private String narcotizacion;
+    private String fijador;
+    private String conservanteActual;
     @ManyToOne
-    private Narcotizacion narcotizacion;
-    @ManyToOne
-    private Fijador fijador;
-    @ManyToOne
-    private ConservanteActual conservanteActual;
+    private Especie especie;
 
-    public void setConservanteActual(ConservanteActual conservanteActual) {
+    public void setConservanteActual(String conservanteActual) {
         this.conservanteActual = conservanteActual;
     }
 
@@ -33,11 +30,19 @@ public class Conservacion {
         return id;
     }
 
-    public void setNarcotizacion(Narcotizacion narcotizacion) {
+    public void setNarcotizacion(String narcotizacion) {
         this.narcotizacion = narcotizacion;
     }
 
-    public void setFijador(Fijador fijador) {
+    public Especie getEspecie() {
+        return especie;
+    }
+
+    public void setEspecie(Especie especie) {
+        this.especie = especie;
+    }
+
+    public void setFijador(String fijador) {
         this.fijador = fijador;
     }
 
@@ -45,15 +50,15 @@ public class Conservacion {
         return estudiosGeneticos;
     }
 
-    public ConservanteActual getConservanteActual() {
+    public String getConservanteActual() {
         return conservanteActual;
     }
 
-    public Fijador getFijador() {
+    public String getFijador() {
         return fijador;
     }
 
-    public Narcotizacion getNarcotizacion() {
+    public String getNarcotizacion() {
         return narcotizacion;
     }
 
@@ -75,5 +80,49 @@ public class Conservacion {
 
     public void setIncidencias(String incidencias) {
         this.incidencias = incidencias;
+    }
+
+    public static List<String> conservanteActualList() {
+        List<String> stringList = new LinkedList<>();
+
+        stringList.add("Congelación -20ºC");
+        stringList.add("Congelación -80ºC");
+        stringList.add("Etanol 100%");
+        stringList.add("Etanol 96%");
+        stringList.add("Etanol 90%");
+        stringList.add("Etanol 70%");
+        stringList.add("Formol 4%");
+        stringList.add("Glicerina");
+        stringList.add("Gluteraldehido");
+        stringList.add("Nitrógeno líquido");
+        stringList.add("Seco");
+
+        return stringList;
+    }
+
+    public static List<String> narcotizacionList() {
+        List<String> stringList = new LinkedList<>();
+
+        stringList.add("Congelación");
+        stringList.add("Etanol");
+        stringList.add("Mentol");
+        stringList.add("Ninguna");
+
+        return stringList;
+    }
+
+    public static List<String> fijadorList() {
+        List<String> stringList = new LinkedList<>();
+
+        stringList.add("Congelación -20ºC");
+        stringList.add("Congelación -80ºC");
+        stringList.add("Etanol 100%");
+        stringList.add("Etanol 96%");
+        stringList.add("Etanol 90%");
+        stringList.add("Etanol 70%");
+        stringList.add("Formol 4%");
+        stringList.add("Nitrógeno líquido");
+
+        return stringList;
     }
 }
