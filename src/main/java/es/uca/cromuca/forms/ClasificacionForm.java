@@ -86,7 +86,22 @@ public class ClasificacionForm extends FormLayout {
                 if(especieService.findLastid() == null){ //no hay ninguno insertado
                     numeroCatalogo.setValue("0001");
                 } else{ //hay insertado
-                    numeroCatalogo.setValue(especieService.nuevoNumero());
+                    String catalogoString = especieService.nuevoNumero();
+                    Integer numero = Integer.parseInt(catalogoString) + 1;
+                    switch (numero.toString().length()) {
+                        case 1:
+                            numeroCatalogo.setValue("000" + numero.toString());
+                            break;
+                        case 2:
+                            numeroCatalogo.setValue("00" + numero.toString());
+                            break;
+                        case 3:
+                            numeroCatalogo.setValue("0" + numero.toString());
+                            break;
+                        case 4:
+                            numeroCatalogo.setValue(numero.toString());
+                            break;
+                    }
                 }
                 numeroFrasco.setValue("01");
                 numeroCatalogo.setEnabled(false);
@@ -94,6 +109,7 @@ public class ClasificacionForm extends FormLayout {
                 fechaAlta.setValue(LocalDate.now());
             } else{
                 numeroCatalogo.setValue("");
+                numeroFrasco.setValue("");
                 numeroFrasco.setEnabled(true);
                 numeroCatalogo.setEnabled(true);
             }

@@ -1,5 +1,6 @@
 package es.uca.cromuca.services;
 
+import es.uca.cromuca.entities.Especie;
 import es.uca.cromuca.entities.Ubicacion;
 import es.uca.cromuca.repositories.UbicacionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,5 +32,9 @@ public class UbicacionService {
 
     public void borrar(Ubicacion entrada) {
         ubicacionRepository.delete(entrada);
+    }
+
+    public Ubicacion findByEspecie(Especie especie) {
+        return ubicacionRepository.findByEspecie(especie);
     }
 }

@@ -4,13 +4,12 @@ import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.HasComponents;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.applayout.AppLayout;
-import com.vaadin.flow.component.applayout.DrawerToggle;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
-import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.tabs.Tab;
 import com.vaadin.flow.component.tabs.TabVariant;
 import com.vaadin.flow.component.tabs.Tabs;
@@ -21,7 +20,6 @@ import com.vaadin.flow.theme.lumo.Lumo;
 import es.uca.cromuca.entities.Usuario;
 import es.uca.cromuca.services.*;
 import es.uca.cromuca.springclasses.SecurityUtils;
-import es.uca.cromuca.views.Gestion.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
@@ -36,8 +34,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 @CssImport(value = "./styles/vaadin-text-field-styles.css", themeFor = "vaadin-text-field")
 public class MainView extends AppLayout {
     Tabs tabs = new Tabs();
-    final DrawerToggle drawerToggle = new DrawerToggle();
-    final VerticalLayout menuLayout = new VerticalLayout();
+    //final DrawerToggle drawerToggle = new DrawerToggle();
+    //final VerticalLayout menuLayout = new VerticalLayout();
+    final HorizontalLayout menuLayout = new HorizontalLayout();
     final boolean touchOptimized = true;
     Button logout = new Button(new Icon(VaadinIcon.SIGN_OUT));
 
@@ -53,26 +52,25 @@ public class MainView extends AppLayout {
         } else {
             //tabs.add(createTab(VaadinIcon.PLUS, "Crear receta", CrearRecetaView.class));
             if (SecurityUtils.hasRole("Admin")) {
-                tabs.add(createTab(VaadinIcon.RECORDS, "Gestión Phylum", PhylumGestionView.class));
-                tabs.add(createTab(VaadinIcon.RECORDS, "Gestión Categoria", CategoriaTaxonomicaGestionView.class));
-                tabs.add(createTab(VaadinIcon.RECORDS, "Gestión Familia", FamiliaGestionView.class));
-                tabs.add(createTab(VaadinIcon.RECORDS, "Gestión Genero", GeneroGestionView.class));
-                tabs.add(createTab(VaadinIcon.RECORDS, "Gestión Pais", PaisGestionView.class));
-                tabs.add(createTab(VaadinIcon.RECORDS, "Gestión Metodo Captura", MetodoCapturaGestionView.class));
-                tabs.add(createTab(VaadinIcon.RECORDS, "Gestión Tipo sustrato", TipoSustratoGestionView.class));
                 tabs.add(createTab(VaadinIcon.RECORDS, "Clasificacion", ClasificacionView.class));
                 tabs.add(createTab(VaadinIcon.RECORDS, "DatosMuestreo", DatosMuestreoView.class));
                 tabs.add(createTab(VaadinIcon.RECORDS, "Ejemplares", EjemplaresView.class));
                 tabs.add(createTab(VaadinIcon.RECORDS, "Conservacion", ConservacionView.class));
+                tabs.add(createTab(VaadinIcon.RECORDS, "Historial determinacion", HistorialDeterminacionView.class));
+                tabs.add(createTab(VaadinIcon.RECORDS, "Ubicacion", UbicacionView.class));
+                tabs.add(createTab(VaadinIcon.RECORDS, "Archivos multimedia", ArchivoView.class));
             }
         }
-        addToDrawer(menuLayout, tabs); //anadirlo al desplegable
-        addToNavbar(touchOptimized, drawerToggle/*, createTab(VaadinIcon.HOME, "Inicio", InicioView.class)*/); //anadirlo a la barra vertical
+        //addToDrawer(menuLayout, tabs); //anadirlo al desplegable
+        tabs.setOrientation(Tabs.Orientation.HORIZONTAL);
+        tabs.setFlexGrowForEnclosedTabs(1.0);
+        addToNavbar(touchOptimized, tabs/*drawerToggle, createTab(VaadinIcon.HOME, "Inicio", InicioView.class)*/); //anadirlo a la barra vertical
         if (SecurityUtils.isUserLoggedIn()) {
             logout.getStyle().set("center", "auto");
-            addToDrawer(logout);
-        } else
-            drawerToggle.clickInClient();
+            //addToDrawer(logout);
+            addToNavbar(logout);
+        } /*else
+            drawerToggle.clickInClient();*/
         //UI.getCurrent().navigate("Inicio");
     }
 

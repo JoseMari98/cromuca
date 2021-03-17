@@ -21,6 +21,36 @@ public class Especie {
     private Set<Ejemplares> ejemplaresSet;
     @OneToMany(mappedBy = "especie")
     private Set<Conservacion> conservacionSet;
+    @OneToMany(mappedBy = "especie")
+    private Set<HistorialDeterminacion> historialDeterminacionSet;
+    @OneToMany(mappedBy = "especie")
+    private Set<Ubicacion> ubicacionSet;
+    @OneToMany(mappedBy = "especie")
+    private Set<Archivo> archivoSet;
+
+    public Set<HistorialDeterminacion> getHistorialDeterminacionSet() {
+        return historialDeterminacionSet;
+    }
+
+    public void setHistorialDeterminacionSet(Set<HistorialDeterminacion> historialDeterminacionSet) {
+        this.historialDeterminacionSet = historialDeterminacionSet;
+    }
+
+    public Set<Ubicacion> getUbicacionSet() {
+        return ubicacionSet;
+    }
+
+    public void setUbicacionSet(Set<Ubicacion> ubicacionSet) {
+        this.ubicacionSet = ubicacionSet;
+    }
+
+    public Set<Archivo> getArchivoSet() {
+        return archivoSet;
+    }
+
+    public void setArchivoSet(Set<Archivo> archivoSet) {
+        this.archivoSet = archivoSet;
+    }
 
     public Set<Ejemplares> getEjemplaresSet() {
         return ejemplaresSet;

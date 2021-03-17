@@ -13,7 +13,7 @@ import org.springframework.security.access.annotation.Secured;
 @Route(value = "ConservacionView", layout = MainView.class)
 public class ConservacionView extends AbstractView {
     private ConservacionForm conservacionForm;
-    private H1 titulo = new H1("Ejemplares");
+    private H1 titulo = new H1("Ubicacion");
 
     @Autowired
     ConservacionView(EspecieService especieService, ConservacionService conservacionService) {

@@ -1,6 +1,8 @@
 package es.uca.cromuca.entities;
 
 import javax.persistence.*;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -12,9 +14,27 @@ public class Ubicacion {
     private String estatus;
     @OneToMany(mappedBy = "ubicacion")
     private Set<Prestamo> prestamoSet;
+    @ManyToOne
+    private Especie especie;
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Set<Prestamo> getPrestamoSet() {
+        return prestamoSet;
+    }
+
+    public void setPrestamoSet(Set<Prestamo> prestamoSet) {
+        this.prestamoSet = prestamoSet;
+    }
+
+    public Especie getEspecie() {
+        return especie;
+    }
+
+    public void setEspecie(Especie especie) {
+        this.especie = especie;
     }
 
     public Set<Prestamo> getPrestamosSet() {
@@ -59,5 +79,17 @@ public class Ubicacion {
 
     public void setEstatus(String estatus) {
         this.estatus = estatus;
+    }
+
+    public static List<String> estatusList() {
+        List<String> stringList = new LinkedList<>();
+
+        stringList.add("Disponible");
+        stringList.add("Prestado(Todo)");
+        stringList.add("Prestado(Parte)");
+        stringList.add("Donado");
+        stringList.add("Perdido");
+
+        return stringList;
     }
 }

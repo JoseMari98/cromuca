@@ -1,5 +1,6 @@
 package es.uca.cromuca.services;
 
+import es.uca.cromuca.entities.Especie;
 import es.uca.cromuca.entities.HistorialDeterminacion;
 import es.uca.cromuca.repositories.HistorialDeterminacionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,5 +32,9 @@ public class HistorialDeterminacionService {
 
     public void borrar(HistorialDeterminacion entrada) {
         historialDeterminacionRepository.delete(entrada);
+    }
+
+    public HistorialDeterminacion findByEspecie(Especie especie) {
+        return historialDeterminacionRepository.findByEspecie(especie);
     }
 }

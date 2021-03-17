@@ -1,6 +1,7 @@
 package es.uca.cromuca.services;
 
 import es.uca.cromuca.entities.Archivo;
+import es.uca.cromuca.entities.Especie;
 import es.uca.cromuca.repositories.ArchivoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,5 +32,9 @@ public class ArchivoService {
 
     public void borrar(Archivo entrada) {
         archivoRepository.delete(entrada);
+    }
+
+    public Archivo findByEspecie(Especie especie) {
+        return archivoRepository.findByEspecie(especie);
     }
 }

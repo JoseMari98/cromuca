@@ -13,11 +13,20 @@ public class Prestamo {
     private String observaciones = "";
     private boolean devuelto;
     private LocalDate fecha, fechaLimite;
+    private int numEjemplares;
     @ManyToOne
     private Ubicacion ubicacion;
 
     public Long getId() {
         return id;
+    }
+
+    public int getNumEjemplares() {
+        return numEjemplares;
+    }
+
+    public void setNumEjemplares(int numEjemplares) {
+        this.numEjemplares = numEjemplares;
     }
 
     public void setId(Long id) {

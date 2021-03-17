@@ -16,6 +16,8 @@ public class Archivo {
     private LocalDate fecha;
     @Enumerated(EnumType.STRING)
     private FormatoMultimedia formatoMultimedia;
+    @ManyToOne
+    private Especie especie;
 
     public Long getId() {
         return id;
@@ -63,5 +65,13 @@ public class Archivo {
 
     public void setFormatoMultimedia(FormatoMultimedia formatoMultimedia) {
         this.formatoMultimedia = formatoMultimedia;
+    }
+
+    public Especie getEspecie() {
+        return especie;
+    }
+
+    public void setEspecie(Especie especie) {
+        this.especie = especie;
     }
 }

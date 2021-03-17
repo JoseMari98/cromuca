@@ -3,7 +3,7 @@ package es.uca.cromuca.views;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.Route;
-import es.uca.cromuca.forms.Gestion.EjemplaresForm;
+import es.uca.cromuca.forms.EjemplaresForm;
 import es.uca.cromuca.services.EjemplaresService;
 import es.uca.cromuca.services.EspecieService;
 import org.springframework.beans.factory.annotation.Autowired;

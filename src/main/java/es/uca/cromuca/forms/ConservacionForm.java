@@ -79,15 +79,6 @@ public class ConservacionForm extends FormLayout {
 
         HorizontalLayout numeroCatalogoLay = new HorizontalLayout(numeroCatalogo, numeroFrasco, comprobar);
         numeroCatalogoLay.setAlignItems(FlexComponent.Alignment.BASELINE);
-        /*VerticalLayout primero = new VerticalLayout(narcotizacion, frascosLote);
-        primero.setAlignItems(FlexComponent.Alignment.BASELINE);
-        primero.setAlignItems(FlexComponent.Alignment.AUTO);
-        HorizontalLayout formatoLay = new HorizontalLayout(formato);
-        formatoLay.setAlignItems(FlexComponent.Alignment.BASELINE);
-
-        VerticalLayout izqNum = new VerticalLayout(machos, hembrasAdultas, hembrasOvig, hermafroditas, sinSexo);
-        VerticalLayout dchaNum = new VerticalLayout(estudiosGeneticos, larvas, juveniles);
-        HorizontalLayout numerosLay = new HorizontalLayout(izqNum, dchaNum);*/
 
         historial.setSizeFull();
         incidencias.setWidthFull();
