@@ -1,27 +1,27 @@
 package es.uca.cromuca.forms;
 
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.checkbox.Checkbox;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.notification.Notification;
-import com.vaadin.flow.component.orderedlayout.FlexComponent;
-import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextArea;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.Binder;
 import es.uca.cromuca.entities.Conservacion;
 import es.uca.cromuca.entities.Especie;
+import es.uca.cromuca.entities.Usuario;
 import es.uca.cromuca.services.ConservacionService;
 import es.uca.cromuca.services.EspecieService;
 import es.uca.cromuca.views.ConservacionView;
 
 public class ConservacionForm extends FormLayout {
-    private Button comprobar = new Button("Buscar");
-    private TextField numeroCatalogo = new TextField("Num. catálogo");
-    private TextField numeroFrasco = new TextField();
+    public Button comprobar = new Button("Buscar");
+    public TextField numeroCatalogo = new TextField("Num. catálogo");
+    public TextField numeroFrasco = new TextField();
     private Checkbox estudiosGeneticos = new Checkbox("Ejemplares para estudios genéticos");
     private TextArea historial = new TextArea("Historial de conservación");
     private TextArea incidencias = new TextArea("Incidencias de conservación");
@@ -32,7 +32,7 @@ public class ConservacionForm extends FormLayout {
     private ConservacionService conservacionService;
     private ConservacionForm conservacionForm;
     private ConservacionView conservacionView;
-    private Especie especieCreada;
+    public Especie especieCreada;
     private Binder<Conservacion> binder = new Binder<>(Conservacion.class);
     private Button save = new Button("Continuar");
     private Conservacion conservacion = null;
@@ -74,16 +74,17 @@ public class ConservacionForm extends FormLayout {
             }
         });
 
+        if (UI.getCurrent().getSession().getAttribute(Usuario.class) == null) {
+            save.setEnabled(false);
+        }
+
         incidencias.getStyle().set("minHeight", "150px");
         historial.getStyle().set("minHeight", "150px");
-
-        HorizontalLayout numeroCatalogoLay = new HorizontalLayout(numeroCatalogo, numeroFrasco, comprobar);
-        numeroCatalogoLay.setAlignItems(FlexComponent.Alignment.BASELINE);
 
         historial.setSizeFull();
         incidencias.setWidthFull();
 
-        VerticalLayout izq = new VerticalLayout(numeroCatalogoLay, narcotizacion, fijador, estudiosGeneticos, conservanteActual, incidencias);
+        VerticalLayout izq = new VerticalLayout(narcotizacion, fijador, estudiosGeneticos, conservanteActual, incidencias);
         VerticalLayout dcha = new VerticalLayout(historial);
 
         add(izq, dcha, save);

@@ -1,24 +1,24 @@
 package es.uca.cromuca.views;
 
-import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.Route;
+import es.uca.cromuca.forms.ClasificacionForm;
 import es.uca.cromuca.forms.HistorialDeterminacionForm;
-import es.uca.cromuca.services.EspecieService;
-import es.uca.cromuca.services.HistorialDeterminacionService;
+import es.uca.cromuca.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.annotation.Secured;
 
-@Secured("Admin")
 @Route(value = "HistorialDeterminacionView", layout = MainView.class)
-public class HistorialDeterminacionView extends AbstractView {
+public class HistorialDeterminacionView extends VerticalLayout {
     private HistorialDeterminacionForm historialDeterminacionForm;
-    private H1 titulo = new H1("Historial determinacion");
+    private ClasificacionForm clasificacionForm;
 
     @Autowired
-    HistorialDeterminacionView(EspecieService especieService, HistorialDeterminacionService historialDeterminacionService) {
+    HistorialDeterminacionView(GeneroService generoService, CategoriaTaxonomicaService categoriaTaxonomicaService, FamiliaService familiaService, PhylumService phylumService,
+                               EspecieService especieService, HistorialDeterminacionService historialDeterminacionService) {
         this.historialDeterminacionForm = new HistorialDeterminacionForm(this, especieService, historialDeterminacionService);
-        VerticalLayout contenido = new VerticalLayout(titulo, historialDeterminacionForm);
+        this.clasificacionForm = new ClasificacionForm(generoService, especieService, familiaService, categoriaTaxonomicaService, phylumService);
+        this.clasificacionForm.historialDeterminacionForm = historialDeterminacionForm;
+        VerticalLayout contenido = new VerticalLayout(clasificacionForm, historialDeterminacionForm);
         //contenido.setSizeFull();
         add(contenido);
         //setSizeFull();

@@ -16,19 +16,25 @@ import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.Binder;
 import es.uca.cromuca.entities.DatosMuestreo;
 import es.uca.cromuca.entities.Especie;
-import es.uca.cromuca.entities.enums.*;
+import es.uca.cromuca.entities.Usuario;
+import es.uca.cromuca.entities.enums.MetodoCaptura;
+import es.uca.cromuca.entities.enums.Pais;
+import es.uca.cromuca.entities.enums.ProcedenciaMaterial;
+import es.uca.cromuca.entities.enums.TipoSustrato;
 import es.uca.cromuca.services.DatosMuestreoService;
 import es.uca.cromuca.services.EspecieService;
-import es.uca.cromuca.services.enums.*;
+import es.uca.cromuca.services.enums.MetodoCapturaService;
+import es.uca.cromuca.services.enums.PaisService;
+import es.uca.cromuca.services.enums.TipoSustratoService;
 import es.uca.cromuca.views.DatosMuestreoView;
 
 public class DatosMuestreoForm extends FormLayout {
-    private Button comprobar = new Button("Buscar");
+    public Button comprobar = new Button("Buscar");
     private Button addThingsPais = new Button("+");
     private Button addThingsTipoSustrato = new Button("+");
     private Button addThingsMetodoCaptura = new Button("+");
-    private TextField numeroCatalogo = new TextField("Num. catálogo");
-    private TextField numeroFrasco = new TextField();
+    public TextField numeroCatalogo = new TextField("Num. catálogo");
+    public TextField numeroFrasco = new TextField();
     private TextField localidad = new TextField("Localidad");
     private TextField latitud = new TextField("Latitud");
     private TextField longitud = new TextField("Latitud");
@@ -40,35 +46,28 @@ public class DatosMuestreoForm extends FormLayout {
     private ComboBox<Pais> pais = new ComboBox<>("Pais");
     private ComboBox<MetodoCaptura> metodoCaptura = new ComboBox<>("Metodo Captura");
     private ComboBox<TipoSustrato> tipoSustrato = new ComboBox<>("Tipo sustrato");
-    private ComboBox<RegionBiogeografica> regionBiogeografica = new ComboBox<>("Región Biogeografica");
-    private ComboBox<RegionMarina> regionMarina = new ComboBox<>("Región marina");
-    private ComboBox<Habitat> habitat = new ComboBox<>("Habitat/Comunidad");
+    private ComboBox<String> regionBiogeografica = new ComboBox<>("Región Biogeografica");
+    private ComboBox<String> regionMarina = new ComboBox<>("Región marina");
+    private ComboBox<String> habitat = new ComboBox<>("Habitat/Comunidad");
     private ComboBox<ProcedenciaMaterial> procedenciaMaterial = new ComboBox<>("Procedencia material");
     private EspecieService especieService;
     private TipoSustratoService tipoSustratoService;
     private PaisService paisService;
     private MetodoCapturaService metodoCapturaService;
-    private RegionMarinaService regionMarinaService;
-    private RegionBiogeograficaService regionBiogeograficaService;
-    private HabitatService habitatService;
     private DatosMuestreoService datosMuestreoService;
     private DatosMuestreoView datosMuestreoView;
-    private Especie especieCreada;
+    public Especie especieCreada;
     private Binder<DatosMuestreo> binder = new Binder<>(DatosMuestreo.class);
     private Button save = new Button("Continuar");
     private DatosMuestreo datosMuestreo = null;
 
     public DatosMuestreoForm(DatosMuestreoView datosMuestreoView, EspecieService especieService, DatosMuestreoService datosMuestreoService,
-                             TipoSustratoService tipoSustratoService, PaisService paisService, MetodoCapturaService metodoCapturaService,
-                             RegionMarinaService regionMarinaService, RegionBiogeograficaService regionBiogeograficaService, HabitatService habitatService) {
+                             TipoSustratoService tipoSustratoService, PaisService paisService, MetodoCapturaService metodoCapturaService) {
         this.datosMuestreoService = datosMuestreoService;
         this.especieService = especieService;
         this.tipoSustratoService = tipoSustratoService;
         this.paisService = paisService;
         this.metodoCapturaService = metodoCapturaService;
-        this.regionBiogeograficaService = regionBiogeograficaService;
-        this.regionMarinaService = regionMarinaService;
-        this.habitatService = habitatService;
         this.datosMuestreoView = datosMuestreoView;
 
         save.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
@@ -87,14 +86,11 @@ public class DatosMuestreoForm extends FormLayout {
 
         procedenciaMaterial.setItems(ProcedenciaMaterial.values());
 
-        regionBiogeografica.setItems(regionBiogeograficaService.findAll());
-        regionBiogeografica.setItemLabelGenerator(RegionBiogeografica::getRegionBiogeografica);
+        regionBiogeografica.setItems(DatosMuestreo.regionBiogeograficaList());
 
-        regionMarina.setItems(regionMarinaService.findAll());
-        regionMarina.setItemLabelGenerator(RegionMarina::getRegionMarina);
+        regionMarina.setItems(DatosMuestreo.regionMarinaList());
 
-        habitat.setItems(habitatService.findAll());
-        habitat.setItemLabelGenerator(Habitat::getHabitat);
+        habitat.setItems(DatosMuestreo.habitatList());
 
         binder.bindInstanceFields(this);
 
@@ -107,6 +103,13 @@ public class DatosMuestreoForm extends FormLayout {
         addThingsMetodoCaptura.addClickListener(e -> {
             UI.getCurrent().navigate("GestionMetodoCaptura");
         });
+
+        if (UI.getCurrent().getSession().getAttribute(Usuario.class) == null) {
+            addThingsPais.setEnabled(false);
+            addThingsMetodoCaptura.setEnabled(false);
+            addThingsTipoSustrato.setEnabled(false);
+            save.setEnabled(false);
+        }
 
         comprobar.addClickListener(e -> {
             if (especieService.findByNumCatalogoAndFrasco(numeroCatalogo.getValue(), numeroFrasco.getValue()) != null) {
@@ -130,16 +133,13 @@ public class DatosMuestreoForm extends FormLayout {
         });
         profundidad.setMin(0);
         observaciones.getStyle().set("minHeight", "150px");
-        //observaciones.setPlaceholder("");
-        HorizontalLayout numeroCatalogoLay = new HorizontalLayout(numeroCatalogo, numeroFrasco, comprobar);
-        numeroCatalogoLay.setAlignItems(FlexComponent.Alignment.BASELINE);
         HorizontalLayout tipoSustratoLay = new HorizontalLayout(tipoSustrato, addThingsTipoSustrato);
         tipoSustratoLay.setAlignItems(FlexComponent.Alignment.BASELINE);
         HorizontalLayout metodoCapturaLay = new HorizontalLayout(metodoCaptura, addThingsMetodoCaptura);
         metodoCapturaLay.setAlignItems(FlexComponent.Alignment.BASELINE);
         HorizontalLayout paisLay = new HorizontalLayout(pais, addThingsPais);
         paisLay.setAlignItems(FlexComponent.Alignment.BASELINE);
-        VerticalLayout izq = new VerticalLayout(numeroCatalogoLay, tipoOrganismo, fechaCaptura, profundidad, paisLay, localidad, latitud, longitud, metodoCapturaLay);
+        VerticalLayout izq = new VerticalLayout(tipoOrganismo, fechaCaptura, profundidad, paisLay, localidad, latitud, longitud, metodoCapturaLay);
         VerticalLayout dcha = new VerticalLayout(regionBiogeografica, regionMarina, habitat, tipoSustratoLay, procedenciaMaterial, colector);
 
         add(izq, dcha, observaciones, save);
@@ -158,16 +158,6 @@ public class DatosMuestreoForm extends FormLayout {
             if (profundidad.getValue() == null)
                 profundidad.setValue(0.0);
             datosMuestreoService.guardar(datosMuestreo);
-        /*datosMuestreo.setTipoOrganismo(tipoOrganismo.getValue());
-        datosMuestreo.setFechaCaptura(fechaCaptura.getValue());
-        datosMuestreo.setProfundidad(profundidad.getValue().floatValue());
-        datosMuestreo.setPais(pais.getValue());
-        datosMuestreo.setLocalidad(localidad.getValue());
-        datosMuestreo.setLatitud(latitud.getValue());
-        datosMuestreo.setLongitud(longitud.getValue());
-        datosMuestreo.setMetodoCaptura(metodoCaptura.getValue());
-        datosMuestreo.setObservaciones(observaciones.getValue());
-        datosMuestreo.setTipoSustrato(tipoSustrato.getValue());*/
             Notification.show("Valores guardados", 3000, Notification.Position.MIDDLE);
         } else
             Notification.show("No hay especie", 3000, Notification.Position.MIDDLE);

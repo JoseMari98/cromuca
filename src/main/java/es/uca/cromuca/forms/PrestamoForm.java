@@ -16,6 +16,7 @@ import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.Binder;
 import es.uca.cromuca.entities.Prestamo;
 import es.uca.cromuca.entities.Ubicacion;
+import es.uca.cromuca.entities.Usuario;
 import es.uca.cromuca.services.PrestamoService;
 import es.uca.cromuca.services.UbicacionService;
 import es.uca.cromuca.views.UbicacionView;
@@ -52,6 +53,9 @@ public class PrestamoForm extends FormLayout {
         save.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         add(formulario, buttons);
         save.addClickShortcut(Key.ENTER);
+
+        if (UI.getCurrent().getSession().getAttribute(Usuario.class) == null)
+            save.setEnabled(false);
 
         numEjemplares.setValue(0);
         binder.bindInstanceFields(this);

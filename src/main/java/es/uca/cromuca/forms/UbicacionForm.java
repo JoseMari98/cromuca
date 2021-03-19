@@ -13,14 +13,15 @@ import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.Binder;
 import es.uca.cromuca.entities.Especie;
 import es.uca.cromuca.entities.Ubicacion;
+import es.uca.cromuca.entities.Usuario;
 import es.uca.cromuca.services.EspecieService;
 import es.uca.cromuca.services.UbicacionService;
 import es.uca.cromuca.views.UbicacionView;
 
 public class UbicacionForm extends FormLayout {
-    private Button comprobar = new Button("Buscar");
-    private TextField numeroCatalogo = new TextField("Num. catálogo");
-    private TextField numeroFrasco = new TextField();
+    public Button comprobar = new Button("Buscar");
+    public TextField numeroCatalogo = new TextField("Num. catálogo");
+    public TextField numeroFrasco = new TextField();
     private IntegerField armario = new IntegerField("Armario");
     private IntegerField estante = new IntegerField("Estante");
     private IntegerField cajon = new IntegerField("Cajón");
@@ -28,7 +29,7 @@ public class UbicacionForm extends FormLayout {
     private EspecieService especieService;
     private UbicacionService ubicacionService;
     private UbicacionView ubicacionView;
-    private Especie especieCreada;
+    public Especie especieCreada;
     private Binder<Ubicacion> binder = new Binder<>(Ubicacion.class);
     private Button save = new Button("Continuar");
     private Ubicacion ubicacion = null;
@@ -68,17 +69,18 @@ public class UbicacionForm extends FormLayout {
             }
         });
 
+        if (UI.getCurrent().getSession().getAttribute(Usuario.class) == null)
+            save.setEnabled(false);
+
         estatus.setItems(Ubicacion.estatusList());
         estatus.setValue("Disponible");
 
-        HorizontalLayout numeroCatalogoLay = new HorizontalLayout(numeroCatalogo, numeroFrasco, comprobar);
-        numeroCatalogoLay.setAlignItems(FlexComponent.Alignment.BASELINE);
         HorizontalLayout ubicacion = new HorizontalLayout(armario, estante, cajon, estatus, save);
         ubicacion.setAlignItems(FlexComponent.Alignment.BASELINE);
 
         //VerticalLayout izq = new VerticalLayout(numeroCatalogoLay, ubicacion);
 
-        add(numeroCatalogoLay, ubicacion);
+        add(ubicacion);
 
         setSizeFull();
         save.addClickListener(event -> save());

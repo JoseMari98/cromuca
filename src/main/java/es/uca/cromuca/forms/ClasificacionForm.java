@@ -14,7 +14,7 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import es.uca.cromuca.entities.*;
 import es.uca.cromuca.services.*;
-import es.uca.cromuca.views.ClasificacionView;
+import es.uca.cromuca.views.ArchivoView;
 
 import java.time.LocalDate;
 
@@ -35,23 +35,29 @@ public class ClasificacionForm extends FormLayout {
     private ComboBox<CategoriaTaxonomicaPpal> categoriaTaxonomicaPpal = new ComboBox<>("Categoría tax. ppal.");
     private ComboBox<Phylum> phylum = new ComboBox<>("Phylum");
     private Checkbox nuevo = new Checkbox("Nuevo registro");
+    public DatosMuestreoForm datosMuestreoForm;
+    public EjemplaresForm ejemplaresForm;
+    public ConservacionForm conservacionForm;
+    public UbicacionForm ubicacionForm;
+    public ArchivoForm archivoForm;
+    public HistorialDeterminacionForm historialDeterminacionForm;
+    public ArchivoView archivoView;
     private EspecieService especieService;
     private GeneroService generoService;
     private FamiliaService familiaService;
     private PhylumService phylumService;
     private CategoriaTaxonomicaService categoriaTaxonomicaService;
-    private ClasificacionView clasificacionView;
     private Especie especieCreada;
     private Button save = new Button("Continuar");
 
-    public ClasificacionForm(ClasificacionView clasificacionView, GeneroService generoService, EspecieService especieService, FamiliaService familiaService,
+    public ClasificacionForm(GeneroService generoService, EspecieService especieService, FamiliaService familiaService,
                              CategoriaTaxonomicaService categoriaTaxonomicaService, PhylumService phylumService) {
+        this.datosMuestreoForm = datosMuestreoForm;
         this.generoService = generoService;
         this.especieService = especieService;
         this.familiaService = familiaService;
         this.phylumService = phylumService;
         this.categoriaTaxonomicaService = categoriaTaxonomicaService;
-        this.clasificacionView = clasificacionView;
 
         save.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         comprobar.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
@@ -74,18 +80,27 @@ public class ClasificacionForm extends FormLayout {
             }
         });
         familia.addValueChangeListener(e -> {
-           if(familia.getValue() != null){
-               genero.setRequired(true);
-               genero.setItems(generoService.findByFamilia(familia.getValue()));
-               genero.setItemLabelGenerator(Genero::getGenero);
-           }
+            if (familia.getValue() != null) {
+                genero.setRequired(true);
+                genero.setItems(generoService.findByFamilia(familia.getValue()));
+                genero.setItemLabelGenerator(Genero::getGenero);
+            }
         });
 
+        if (UI.getCurrent().getSession().getAttribute(Usuario.class) == null) {
+            duplicar.setEnabled(false);
+            save.setEnabled(false);
+            addThingsCategoria.setEnabled(false);
+            addThingsFamilia.setEnabled(false);
+            addThingsGenero.setEnabled(false);
+            addThingsPhylum.setEnabled(false);
+        }
+
         nuevo.addClickListener(e -> {
-            if(nuevo.getValue()){
-                if(especieService.findLastid() == null){ //no hay ninguno insertado
+            if (nuevo.getValue()) {
+                if (especieService.findLastid() == null) { //no hay ninguno insertado
                     numeroCatalogo.setValue("0001");
-                } else{ //hay insertado
+                } else { //hay insertado
                     String catalogoString = especieService.nuevoNumero();
                     Integer numero = Integer.parseInt(catalogoString) + 1;
                     switch (numero.toString().length()) {
@@ -128,6 +143,42 @@ public class ClasificacionForm extends FormLayout {
         });
         comprobar.addClickListener(e -> {
             if (especieService.findByNumCatalogoAndFrasco(numeroCatalogo.getValue(), numeroFrasco.getValue()) != null) {
+                if (UI.getCurrent().getInternals().getActiveViewLocation().getFirstSegment().equals("DatosMuestreoView")) {
+                    datosMuestreoForm.numeroFrasco.setValue(numeroFrasco.getValue());
+                    datosMuestreoForm.numeroCatalogo.setValue(numeroCatalogo.getValue());
+                    datosMuestreoForm.especieCreada = especieCreada;
+                    datosMuestreoForm.comprobar.click();
+                }
+                if (UI.getCurrent().getInternals().getActiveViewLocation().getFirstSegment().equals("EjemplaresView")) {
+                    ejemplaresForm.numeroFrasco.setValue(numeroFrasco.getValue());
+                    ejemplaresForm.numeroCatalogo.setValue(numeroCatalogo.getValue());
+                    ejemplaresForm.especieCreada = especieCreada;
+                    ejemplaresForm.comprobar.click();
+                }
+                if (UI.getCurrent().getInternals().getActiveViewLocation().getFirstSegment().equals("ConservacionView")) {
+                    conservacionForm.numeroFrasco.setValue(numeroFrasco.getValue());
+                    conservacionForm.numeroCatalogo.setValue(numeroCatalogo.getValue());
+                    conservacionForm.especieCreada = especieCreada;
+                    conservacionForm.comprobar.click();
+                }
+                if (UI.getCurrent().getInternals().getActiveViewLocation().getFirstSegment().equals("HistorialDeterminacionView")) {
+                    historialDeterminacionForm.numeroFrasco.setValue(numeroFrasco.getValue());
+                    historialDeterminacionForm.numeroCatalogo.setValue(numeroCatalogo.getValue());
+                    historialDeterminacionForm.especieCreada = especieCreada;
+                    historialDeterminacionForm.comprobar.click();
+                }
+                if (UI.getCurrent().getInternals().getActiveViewLocation().getFirstSegment().equals("UbicacionView")) {
+                    ubicacionForm.numeroFrasco.setValue(numeroFrasco.getValue());
+                    ubicacionForm.numeroCatalogo.setValue(numeroCatalogo.getValue());
+                    ubicacionForm.especieCreada = especieCreada;
+                    ubicacionForm.comprobar.click();
+                }
+                if (UI.getCurrent().getInternals().getActiveViewLocation().getFirstSegment().equals("ArchivoView")) {
+                    archivoView.numeroFrasco.setValue(numeroFrasco.getValue());
+                    archivoView.numeroCatalogo.setValue(numeroCatalogo.getValue());
+                    archivoForm.especieCreada = especieCreada;
+                    archivoView.comprobar.click();
+                }
                 especieCreada = especieService.findByNumCatalogoAndFrasco(numeroCatalogo.getValue(), numeroFrasco.getValue());
                 especie.setValue(especieCreada.getEspecie());
                 autorAno.setValue(especieCreada.getAutorAno());
@@ -214,6 +265,7 @@ public class ClasificacionForm extends FormLayout {
                 e.setNumeroFrasco(numeroFrasco.getValue());
                 e.setGenero(genero.getValue());
                 especieService.guardar(e);
+                Notification.show("Guardado con éxito", 3000, Notification.Position.MIDDLE);
             } else
                 Notification.show("Comprueba tus datos", 3000, Notification.Position.MIDDLE);
         } else { //registro antiguo
@@ -227,10 +279,9 @@ public class ClasificacionForm extends FormLayout {
                 especieCreada.setNumeroFrasco(numeroFrasco.getValue());
                 especieCreada.setGenero(genero.getValue());
                 especieService.guardar(especieCreada);
+                Notification.show("Guardado con éxito", 3000, Notification.Position.MIDDLE);
             } else
                 Notification.show("Comprueba tus datos", 3000, Notification.Position.MIDDLE);
         }
-
-        Notification.show("Guardado con éxito", 3000, Notification.Position.MIDDLE);
     }
 }

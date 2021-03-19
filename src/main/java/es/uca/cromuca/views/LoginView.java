@@ -30,11 +30,7 @@ public class LoginView extends VerticalLayout {
         loginForm = new LoginOverlay();
         loginForm.setI18n(createEspanol());
         loginForm.setOpened(true);
-        loginForm.addForgotPasswordListener(e -> {
-            loginForm.close();
-            UI.getCurrent().navigate("OlvidarContrasena");
-        });
-        loginForm.setForgotPasswordButtonVisible(true);
+        loginForm.setForgotPasswordButtonVisible(false);
         loginForm.addLoginListener(e -> signIn(e));
         add(loginForm);
     }

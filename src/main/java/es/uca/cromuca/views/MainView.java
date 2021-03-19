@@ -18,7 +18,6 @@ import com.vaadin.flow.server.PWA;
 import com.vaadin.flow.theme.Theme;
 import com.vaadin.flow.theme.lumo.Lumo;
 import es.uca.cromuca.entities.Usuario;
-import es.uca.cromuca.services.*;
 import es.uca.cromuca.springclasses.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -41,7 +40,7 @@ public class MainView extends AppLayout {
     Button logout = new Button(new Icon(VaadinIcon.SIGN_OUT));
 
     @Autowired
-    public MainView(CategoriaTaxonomicaService categoriaTaxonomicaService, GeneroService generoService, EspecieService especieService, FamiliaService familiaService, PhylumService phylumService) throws InterruptedException {
+    public MainView() throws InterruptedException {
         logout.addClickListener(e -> signOut());
         logout.addThemeVariants(ButtonVariant.LUMO_ERROR);
         tabs.setOrientation(Tabs.Orientation.VERTICAL);
@@ -50,28 +49,21 @@ public class MainView extends AppLayout {
         if (!SecurityUtils.isUserLoggedIn()) {
             tabs.add(createTab(VaadinIcon.SIGN_IN, "Iniciar sesión", LoginView.class));
         } else {
-            //tabs.add(createTab(VaadinIcon.PLUS, "Crear receta", CrearRecetaView.class));
-            if (SecurityUtils.hasRole("Admin")) {
-                tabs.add(createTab(VaadinIcon.RECORDS, "Clasificacion", ClasificacionView.class));
-                tabs.add(createTab(VaadinIcon.RECORDS, "DatosMuestreo", DatosMuestreoView.class));
-                tabs.add(createTab(VaadinIcon.RECORDS, "Ejemplares", EjemplaresView.class));
-                tabs.add(createTab(VaadinIcon.RECORDS, "Conservacion", ConservacionView.class));
-                tabs.add(createTab(VaadinIcon.RECORDS, "Historial determinacion", HistorialDeterminacionView.class));
-                tabs.add(createTab(VaadinIcon.RECORDS, "Ubicacion", UbicacionView.class));
-                tabs.add(createTab(VaadinIcon.RECORDS, "Archivos multimedia", ArchivoView.class));
-            }
+            //hola
         }
-        //addToDrawer(menuLayout, tabs); //anadirlo al desplegable
+        tabs.add(createTab(VaadinIcon.RECORDS, "DatosMuestreo", DatosMuestreoView.class));
+        tabs.add(createTab(VaadinIcon.RECORDS, "Ejemplares", EjemplaresView.class));
+        tabs.add(createTab(VaadinIcon.RECORDS, "Conservacion", ConservacionView.class));
+        tabs.add(createTab(VaadinIcon.RECORDS, "Historial determinacion", HistorialDeterminacionView.class));
+        tabs.add(createTab(VaadinIcon.RECORDS, "Ubicacion", UbicacionView.class));
+        tabs.add(createTab(VaadinIcon.RECORDS, "Archivos multimedia", ArchivoView.class));
         tabs.setOrientation(Tabs.Orientation.HORIZONTAL);
         tabs.setFlexGrowForEnclosedTabs(1.0);
         addToNavbar(touchOptimized, tabs/*drawerToggle, createTab(VaadinIcon.HOME, "Inicio", InicioView.class)*/); //anadirlo a la barra vertical
         if (SecurityUtils.isUserLoggedIn()) {
             logout.getStyle().set("center", "auto");
-            //addToDrawer(logout);
             addToNavbar(logout);
-        } /*else
-            drawerToggle.clickInClient();*/
-        //UI.getCurrent().navigate("Inicio");
+        }
     }
 
     public static Tab createTab(Component content) {

@@ -10,30 +10,32 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.Route;
 import es.uca.cromuca.entities.Prestamo;
 import es.uca.cromuca.entities.Ubicacion;
+import es.uca.cromuca.entities.Usuario;
+import es.uca.cromuca.forms.ClasificacionForm;
 import es.uca.cromuca.forms.PrestamoForm;
 import es.uca.cromuca.forms.UbicacionForm;
-import es.uca.cromuca.services.EspecieService;
-import es.uca.cromuca.services.PrestamoService;
-import es.uca.cromuca.services.UbicacionService;
+import es.uca.cromuca.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.annotation.Secured;
 
-@Secured("Admin")
 @Route(value = "UbicacionView", layout = MainView.class)
-public class UbicacionView extends AbstractView {
+public class UbicacionView extends VerticalLayout {
     private UbicacionForm ubicacionForm;
     private H1 titulo = new H1("Historial determinacion");
     private PrestamoForm prestamoForm;
     private Grid<Prestamo> prestamoGrid = new Grid<>(Prestamo.class);
     private PrestamoService prestamoService;
+    private ClasificacionForm clasificacionForm;
 
     @Autowired
-    UbicacionView(EspecieService especieService, UbicacionService ubicacionService, PrestamoService prestamoService) {
+    UbicacionView(GeneroService generoService, CategoriaTaxonomicaService categoriaTaxonomicaService, FamiliaService familiaService, PhylumService phylumService,
+                  EspecieService especieService, UbicacionService ubicacionService, PrestamoService prestamoService) {
+        this.clasificacionForm = new ClasificacionForm(generoService, especieService, familiaService, categoriaTaxonomicaService, phylumService);
         this.ubicacionForm = new UbicacionForm(this, especieService, ubicacionService);
+        this.clasificacionForm.ubicacionForm = ubicacionForm;
         this.prestamoForm = new PrestamoForm(this, ubicacionService, prestamoService);
         this.prestamoService = prestamoService;
 
-        VerticalLayout contenido = new VerticalLayout(titulo, ubicacionForm);
+        VerticalLayout contenido = new VerticalLayout(clasificacionForm, ubicacionForm);
         contenido.setSizeFull();
         //setSizeFull();
         Button addModeloBtn = new Button("Añade un préstamo");
@@ -45,6 +47,9 @@ public class UbicacionView extends AbstractView {
                 Notification.show("No hay numero de catalogo buscado", 3000, Notification.Position.MIDDLE);
         });
 
+        if (UI.getCurrent().getSession().getAttribute(Usuario.class) == null)
+            addModeloBtn.setEnabled(false);
+
         HorizontalLayout mainContent = new HorizontalLayout(prestamoGrid, prestamoForm); //metemos en un objeto el grid y formulario
         mainContent.setSizeFull();
         prestamoGrid.setColumns("nombre", "fecha", "numEjemplares", "institucion", "email", "telefono", "devuelto", "fechaLimite", "observaciones");
@@ -55,7 +60,10 @@ public class UbicacionView extends AbstractView {
 
         prestamoForm.setPrestamo(null);
 
-        prestamoGrid.asSingleSelect().addValueChangeListener(event -> prestamoForm.setPrestamo(prestamoGrid.asSingleSelect().getValue()));
+        prestamoGrid.asSingleSelect().addValueChangeListener(event -> {
+            if (UI.getCurrent().getSession().getAttribute(Usuario.class) != null)
+                prestamoForm.setPrestamo(prestamoGrid.asSingleSelect().getValue());
+        });
 
         UI.getCurrent().addBeforeLeaveListener(e -> UI.getCurrent().getSession().setAttribute(Ubicacion.class, null));
     }

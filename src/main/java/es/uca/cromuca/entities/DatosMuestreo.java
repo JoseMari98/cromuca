@@ -1,6 +1,9 @@
 package es.uca.cromuca.entities;
 
-import es.uca.cromuca.entities.enums.*;
+import es.uca.cromuca.entities.enums.MetodoCaptura;
+import es.uca.cromuca.entities.enums.Pais;
+import es.uca.cromuca.entities.enums.ProcedenciaMaterial;
+import es.uca.cromuca.entities.enums.TipoSustrato;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -15,10 +18,8 @@ public class DatosMuestreo {
     private String latitud = "", longitud = "", localidad = "", colector = "";
     @Lob
     private String observaciones;
-    @ManyToOne
-    private RegionBiogeografica regionBiogeografica;
-    @ManyToOne
-    private RegionMarina regionMarina;
+    private String regionBiogeografica;
+    private String regionMarina;
     private LocalDate fechaCaptura;
     private Double profundidad;
     private String tipoOrganismo;
@@ -32,10 +33,9 @@ public class DatosMuestreo {
     private MetodoCaptura metodoCaptura;
     @ManyToOne
     private Pais pais;
-    @ManyToOne
-    private Habitat habitat;
+    private String habitat;
 
-    public void setHabitat(Habitat habitat) {
+    public void setHabitat(String habitat) {
         this.habitat = habitat;
     }
 
@@ -55,11 +55,11 @@ public class DatosMuestreo {
         this.id = id;
     }
 
-    public void setRegionBiogeografica(RegionBiogeografica regionBiogeografica) {
+    public void setRegionBiogeografica(String regionBiogeografica) {
         this.regionBiogeografica = regionBiogeografica;
     }
 
-    public void setRegionMarina(RegionMarina regionMarina) {
+    public void setRegionMarina(String regionMarina) {
         this.regionMarina = regionMarina;
     }
 
@@ -75,7 +75,7 @@ public class DatosMuestreo {
         return profundidad;
     }
 
-    public Habitat getHabitat() {
+    public String getHabitat() {
         return habitat;
     }
 
@@ -95,11 +95,11 @@ public class DatosMuestreo {
         return procedenciaMaterial;
     }
 
-    public RegionBiogeografica getRegionBiogeografica() {
+    public String getRegionBiogeografica() {
         return regionBiogeografica;
     }
 
-    public RegionMarina getRegionMarina() {
+    public String getRegionMarina() {
         return regionMarina;
     }
 
@@ -177,6 +177,69 @@ public class DatosMuestreo {
         stringList.add("Adulto");
         stringList.add("Adulto + Larva");
         stringList.add("Larva");
+
+        return stringList;
+    }
+
+    public static List<String> regionBiogeograficaList() {
+        List<String> stringList = new LinkedList<>();
+
+        stringList.add("1. Región Antártica");
+        stringList.add("2. Región Ártica");
+        stringList.add("3. Mediterráneo");
+        stringList.add("4. Atlántico Noroeste");
+        stringList.add("5. Atlántico Noreste");
+        stringList.add("6. Bático");
+        stringList.add("7. Caribe");
+        stringList.add("8. África Oeste");
+        stringList.add("9. Atlántico Sur");
+        stringList.add("10. Índico Central");
+        stringList.add("11. Mar arábico");
+        stringList.add("12. África Este");
+        stringList.add("13. Mar Asiático Este");
+        stringList.add("14. Pacífico Sur");
+        stringList.add("15. Pacífico Norte Este");
+        stringList.add("16. Pacífico Norte Oeste");
+        stringList.add("17. Pacífico Sur Este");
+
+        return stringList;
+    }
+
+    public static List<String> regionMarinaList() {
+        List<String> stringList = new LinkedList<>();
+
+        stringList.add("1. Bentos Supramareal");
+        stringList.add("2. Bentos Intermareal");
+        stringList.add("3. Bentos Submareal");
+        stringList.add("4. Bentos Plataforma continental");
+        stringList.add("5. Bentos Talud continental");
+        stringList.add("6. Bentos Llanura abisal");
+        stringList.add("7. Bentos Fosa Hadal");
+        stringList.add("8. Nerítica");
+        stringList.add("9. Epipelágica Oceánica");
+        stringList.add("10. Mesopelágica");
+        stringList.add("11. Batipelágica");
+        stringList.add("12. Abisal");
+        stringList.add("13. Hadal");
+
+        return stringList;
+    }
+
+    public static List<String> habitatList() {
+        List<String> stringList = new LinkedList<>();
+
+        stringList.add("Algas");
+        stringList.add("Algas calcareas");
+        stringList.add("Arrecife de coral");
+        stringList.add("Comensal");
+        stringList.add("Cuevas");
+        stringList.add("Estuario");
+        stringList.add("Fanerógamas");
+        stringList.add("Intermareal rocoso");
+        stringList.add("Laguna costera");
+        stringList.add("Manglar");
+        stringList.add("Roquedo");
+        stringList.add("Terrestre");
 
         return stringList;
     }

@@ -1,5 +1,6 @@
 package es.uca.cromuca.forms;
 
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.checkbox.Checkbox;
@@ -16,14 +17,15 @@ import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.Binder;
 import es.uca.cromuca.entities.Ejemplares;
 import es.uca.cromuca.entities.Especie;
+import es.uca.cromuca.entities.Usuario;
 import es.uca.cromuca.services.EjemplaresService;
 import es.uca.cromuca.services.EspecieService;
 import es.uca.cromuca.views.EjemplaresView;
 
 public class EjemplaresForm extends FormLayout {
-    private Button comprobar = new Button("Buscar");
-    private TextField numeroCatalogo = new TextField("Num. catálogo");
-    private TextField numeroFrasco = new TextField();
+    public Button comprobar = new Button("Buscar");
+    public TextField numeroCatalogo = new TextField("Num. catálogo");
+    public TextField numeroFrasco = new TextField();
     private IntegerField frascosLote = new IntegerField("Numero de frascos por lote");
     private IntegerField machos = new IntegerField("Num. machos adultos");
     private IntegerField hembrasAdultas = new IntegerField("Num. hembras adultas");
@@ -38,9 +40,8 @@ public class EjemplaresForm extends FormLayout {
     private RadioButtonGroup<String> formato = new RadioButtonGroup<>();
     private EspecieService especieService;
     private EjemplaresService ejemplaresService;
-    private EjemplaresForm ejemplaresForm;
     private EjemplaresView ejemplaresView;
-    private Especie especieCreada;
+    public Especie especieCreada;
     private Binder<Ejemplares> binder = new Binder<>(Ejemplares.class);
     private Button save = new Button("Continuar");
     private Ejemplares ejemplares = null;
@@ -81,6 +82,10 @@ public class EjemplaresForm extends FormLayout {
                 ejemplares = null;
             }
         });
+
+        if (UI.getCurrent().getSession().getAttribute(Usuario.class) == null)
+            save.setEnabled(false);
+
         hermafroditas.setMin(0);
         frascosLote.setMin(0);
         machos.setMin(0);
@@ -110,8 +115,6 @@ public class EjemplaresForm extends FormLayout {
         hembrasAdultas.setWidthFull();
         sinSexo.setWidthFull();
 
-        HorizontalLayout numeroCatalogoLay = new HorizontalLayout(numeroCatalogo, numeroFrasco, comprobar);
-        numeroCatalogoLay.setAlignItems(FlexComponent.Alignment.BASELINE);
         VerticalLayout primero = new VerticalLayout(formaAlmacenamiento, frascosLote);
         primero.setAlignItems(FlexComponent.Alignment.BASELINE);
         primero.setAlignItems(FlexComponent.Alignment.AUTO);
@@ -122,7 +125,7 @@ public class EjemplaresForm extends FormLayout {
         VerticalLayout dchaNum = new VerticalLayout(huevos, larvas, juveniles);
         HorizontalLayout numerosLay = new HorizontalLayout(izqNum, dchaNum);
 
-        VerticalLayout izq = new VerticalLayout(numeroCatalogoLay, primero, formatoLay);
+        VerticalLayout izq = new VerticalLayout(primero, formatoLay);
         VerticalLayout dcha = new VerticalLayout(caracteristicasTipo, numerosLay);
 
         add(izq, dcha, save);

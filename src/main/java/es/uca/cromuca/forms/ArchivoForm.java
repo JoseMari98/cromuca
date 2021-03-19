@@ -20,7 +20,6 @@ import es.uca.cromuca.services.EspecieService;
 import es.uca.cromuca.views.ArchivoView;
 
 public class ArchivoForm extends FormLayout {
-
     private TextField autor = new TextField("Autor");
     private TextField link = new TextField("link");
     private TextArea observaciones = new TextArea("Observaciones");
