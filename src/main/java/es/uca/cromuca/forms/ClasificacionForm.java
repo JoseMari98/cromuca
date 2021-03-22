@@ -62,26 +62,22 @@ public class ClasificacionForm extends FormLayout {
         save.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         comprobar.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
 
-        phylum.setRequired(true);
         phylum.setItems(phylumService.findAll());
         phylum.setItemLabelGenerator(Phylum::getPhylum);
         phylum.addValueChangeListener(e -> {
             if(phylum.getValue() != null){
-                categoriaTaxonomicaPpal.setRequired(true);
                 categoriaTaxonomicaPpal.setItems(categoriaTaxonomicaService.findByPhylum(phylum.getValue()));
                 categoriaTaxonomicaPpal.setItemLabelGenerator(CategoriaTaxonomicaPpal::getCategoriaTaxonomicaPpal);
             }
         });
         categoriaTaxonomicaPpal.addValueChangeListener(e -> {
             if(categoriaTaxonomicaPpal.getValue() != null){
-                familia.setRequired(true);
                 familia.setItems(familiaService.findByCategoria(categoriaTaxonomicaPpal.getValue()));
                 familia.setItemLabelGenerator(Familia::getFamilia);
             }
         });
         familia.addValueChangeListener(e -> {
             if (familia.getValue() != null) {
-                genero.setRequired(true);
                 genero.setItems(generoService.findByFamilia(familia.getValue()));
                 genero.setItemLabelGenerator(Genero::getGenero);
             }
@@ -185,18 +181,10 @@ public class ClasificacionForm extends FormLayout {
                 fechaAlta.setValue(especieCreada.getFechaAlta());
                 numeroCatalogo.setValue(especieCreada.getNumeroCatalogo());
                 numeroFrasco.setValue(especieCreada.getNumeroFrasco());
-
-                Genero generoAux = especieCreada.getGenero();
-
-                Familia familiaAux = generoService.buscarId(generoAux.getId()).get().getFamilia();
-
-                CategoriaTaxonomicaPpal categoriaAux = familiaService.buscarId(familiaAux.getId()).get().getCategoriaTaxonomicaPpal();
-
-                phylum.setValue(categoriaTaxonomicaService.buscarId(categoriaAux.getId()).get().getPhylum());
-
-                categoriaTaxonomicaPpal.setValue(categoriaAux);
-                familia.setValue(familiaAux);
-                genero.setValue(generoAux);
+                phylum.setValue(especieCreada.getPhylum());
+                categoriaTaxonomicaPpal.setValue(especieCreada.getCategoriaTaxonomicaPpal());
+                familia.setValue(especieCreada.getFamilia());
+                genero.setValue(especieCreada.getGenero());
             } else {
                 Notification.show("Numero no existe", 3000, Notification.Position.MIDDLE);
                 numeroCatalogo.setValue("");
@@ -254,11 +242,12 @@ public class ClasificacionForm extends FormLayout {
 
     public void save(){
         if (nuevo.getValue()) { //nuevo registro
-            if (!numeroCatalogo.getValue().isEmpty() && phylum.getValue() != null && categoriaTaxonomicaPpal.getValue() != null &&
-                    familia.getValue() != null && genero.getValue() != null && !especie.getValue().isEmpty() &&
-                    !autorAno.getValue().isEmpty() && fechaAlta.getValue() != null && !numeroFrasco.getValue().isEmpty()) {
+            if (!numeroCatalogo.getValue().isEmpty() && phylum.getValue() != null && !numeroFrasco.getValue().isEmpty()) {
                 Especie e = new Especie();
                 e.setEspecie(especie.getValue());
+                e.setCategoriaTaxonomicaPpal(categoriaTaxonomicaPpal.getValue());
+                e.setPhylum(phylum.getValue());
+                e.setFamilia(familia.getValue());
                 e.setAutorAno(autorAno.getValue());
                 e.setFechaAlta(fechaAlta.getValue());
                 e.setNumeroCatalogo(numeroCatalogo.getValue());
@@ -269,11 +258,12 @@ public class ClasificacionForm extends FormLayout {
             } else
                 Notification.show("Comprueba tus datos", 3000, Notification.Position.MIDDLE);
         } else { //registro antiguo
-            if (!numeroCatalogo.getValue().isEmpty() && phylum.getValue() != null && categoriaTaxonomicaPpal.getValue() != null &&
-                    familia.getValue() != null && genero.getValue() != null && !especie.getValue().isEmpty() &&
-                    !autorAno.getValue().isEmpty() && fechaAlta.getValue() != null && !numeroFrasco.getValue().isEmpty()) {
+            if (!numeroCatalogo.getValue().isEmpty() && phylum.getValue() != null && !numeroFrasco.getValue().isEmpty()) {
                 especieCreada.setEspecie(especie.getValue());
                 especieCreada.setAutorAno(autorAno.getValue());
+                especieCreada.setCategoriaTaxonomicaPpal(categoriaTaxonomicaPpal.getValue());
+                especieCreada.setPhylum(phylum.getValue());
+                especieCreada.setFamilia(familia.getValue());
                 especieCreada.setFechaAlta(fechaAlta.getValue());
                 especieCreada.setNumeroCatalogo(numeroCatalogo.getValue());
                 especieCreada.setNumeroFrasco(numeroFrasco.getValue());

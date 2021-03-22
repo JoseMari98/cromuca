@@ -11,10 +11,17 @@ public class Especie {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @NotEmpty(message = "Este campo es obligatorio")
-    private String especie = "", autorAno = "", numeroCatalogo = "", numeroFrasco = "";
+    private String numeroCatalogo = "", numeroFrasco = "";
     private LocalDate fechaAlta;
+    private String especie = "", autorAno = "";
     @ManyToOne
     private Genero genero;
+    @ManyToOne
+    private Familia familia;
+    @ManyToOne
+    private Phylum phylum;
+    @ManyToOne
+    private CategoriaTaxonomicaPpal categoriaTaxonomicaPpal;
     @OneToMany(mappedBy = "especie")
     private Set<DatosMuestreo> datosMuestreoSet;
     @OneToMany(mappedBy = "especie")
@@ -30,6 +37,30 @@ public class Especie {
 
     public Set<HistorialDeterminacion> getHistorialDeterminacionSet() {
         return historialDeterminacionSet;
+    }
+
+    public Familia getFamilia() {
+        return familia;
+    }
+
+    public void setFamilia(Familia familia) {
+        this.familia = familia;
+    }
+
+    public Phylum getPhylum() {
+        return phylum;
+    }
+
+    public void setPhylum(Phylum phylum) {
+        this.phylum = phylum;
+    }
+
+    public CategoriaTaxonomicaPpal getCategoriaTaxonomicaPpal() {
+        return categoriaTaxonomicaPpal;
+    }
+
+    public void setCategoriaTaxonomicaPpal(CategoriaTaxonomicaPpal categoriaTaxonomicaPpal) {
+        this.categoriaTaxonomicaPpal = categoriaTaxonomicaPpal;
     }
 
     public void setHistorialDeterminacionSet(Set<HistorialDeterminacion> historialDeterminacionSet) {

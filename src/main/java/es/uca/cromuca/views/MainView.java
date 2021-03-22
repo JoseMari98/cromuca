@@ -7,6 +7,7 @@ import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.dependency.CssImport;
+import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
@@ -33,8 +34,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 @CssImport(value = "./styles/vaadin-text-field-styles.css", themeFor = "vaadin-text-field")
 public class MainView extends AppLayout {
     Tabs tabs = new Tabs();
-    //final DrawerToggle drawerToggle = new DrawerToggle();
-    //final VerticalLayout menuLayout = new VerticalLayout();
+    Span appName = new Span("Cromuca");
     final HorizontalLayout menuLayout = new HorizontalLayout();
     final boolean touchOptimized = true;
     Button logout = new Button(new Icon(VaadinIcon.SIGN_OUT));
@@ -59,7 +59,7 @@ public class MainView extends AppLayout {
         tabs.add(createTab(VaadinIcon.RECORDS, "Archivos multimedia", ArchivoView.class));
         tabs.setOrientation(Tabs.Orientation.HORIZONTAL);
         tabs.setFlexGrowForEnclosedTabs(1.0);
-        addToNavbar(touchOptimized, tabs/*drawerToggle, createTab(VaadinIcon.HOME, "Inicio", InicioView.class)*/); //anadirlo a la barra vertical
+        addToNavbar(appName, tabs); //anadirlo a la barra vertical
         if (SecurityUtils.isUserLoggedIn()) {
             logout.getStyle().set("center", "auto");
             addToNavbar(logout);

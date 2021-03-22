@@ -13,6 +13,8 @@ public class Phylum {
     private String phylum = "";
     @OneToMany(mappedBy = "phylum")
     private Set<CategoriaTaxonomicaPpal> categoriaTaxonomicaPpalSet;
+    @OneToMany(mappedBy = "especie")
+    private Set<Especie> especieSete;
 
     public Long getId() {
         return id;
@@ -20,6 +22,14 @@ public class Phylum {
 
     public String getPhylum() {
         return phylum;
+    }
+
+    public Set<Especie> getEspecieSete() {
+        return especieSete;
+    }
+
+    public void setEspecieSete(Set<Especie> especieSete) {
+        this.especieSete = especieSete;
     }
 
     public Set<CategoriaTaxonomicaPpal> getCategoriaTaxonomicaPpalSet() {

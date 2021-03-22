@@ -15,6 +15,8 @@ public class CategoriaTaxonomicaPpal {
     private Set<Familia> familiaSet;
     @ManyToOne
     private Phylum phylum;
+    @OneToMany(mappedBy = "especie")
+    private Set<Especie> especieSete;
 
     public Long getId() {
         return id;
@@ -22,6 +24,14 @@ public class CategoriaTaxonomicaPpal {
 
     public String getCategoriaTaxonomicaPpal() {
         return categoriaTaxonomicaPpal;
+    }
+
+    public Set<Especie> getEspecieSete() {
+        return especieSete;
+    }
+
+    public void setEspecieSete(Set<Especie> especieSete) {
+        this.especieSete = especieSete;
     }
 
     public Phylum getPhylum() {
