@@ -27,7 +27,7 @@ public class DatosMuestreo {
     private TipoSustrato tipoSustrato;
     @Enumerated(EnumType.STRING)
     private ProcedenciaMaterial procedenciaMaterial;
-    @ManyToOne
+    @OneToOne
     private Especie especie;
     @ManyToOne
     private MetodoCaptura metodoCaptura;

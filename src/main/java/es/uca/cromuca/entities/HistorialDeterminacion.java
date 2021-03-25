@@ -12,7 +12,7 @@ public class HistorialDeterminacion {
     @Lob
     private String referenciasBibliograficas, observaciones;
     private LocalDate fechaDeterminacion;
-    @ManyToOne
+    @OneToOne
     private Especie especie;
 
     public Long getId() {

@@ -15,7 +15,7 @@ public class Conservacion {
     private String narcotizacion;
     private String fijador;
     private String conservanteActual;
-    @ManyToOne
+    @OneToOne
     private Especie especie;
 
     public void setConservanteActual(String conservanteActual) {

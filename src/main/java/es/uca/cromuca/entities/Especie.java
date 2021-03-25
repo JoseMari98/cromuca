@@ -22,22 +22,18 @@ public class Especie {
     private Phylum phylum;
     @ManyToOne
     private CategoriaTaxonomicaPpal categoriaTaxonomicaPpal;
-    @OneToMany(mappedBy = "especie")
-    private Set<DatosMuestreo> datosMuestreoSet;
-    @OneToMany(mappedBy = "especie")
-    private Set<Ejemplares> ejemplaresSet;
-    @OneToMany(mappedBy = "especie")
-    private Set<Conservacion> conservacionSet;
-    @OneToMany(mappedBy = "especie")
-    private Set<HistorialDeterminacion> historialDeterminacionSet;
-    @OneToMany(mappedBy = "especie")
-    private Set<Ubicacion> ubicacionSet;
+    @OneToOne(mappedBy = "especie")
+    private DatosMuestreo datosMuestreo;
+    @OneToOne(mappedBy = "especie")
+    private Ejemplares ejemplares;
+    @OneToOne(mappedBy = "especie")
+    private Conservacion conservacion;
+    @OneToOne(mappedBy = "especie")
+    private HistorialDeterminacion historialDeterminacion;
+    @OneToOne(mappedBy = "especie")
+    private Ubicacion ubicacion;
     @OneToMany(mappedBy = "especie")
     private Set<Archivo> archivoSet;
-
-    public Set<HistorialDeterminacion> getHistorialDeterminacionSet() {
-        return historialDeterminacionSet;
-    }
 
     public Familia getFamilia() {
         return familia;
@@ -63,18 +59,6 @@ public class Especie {
         this.categoriaTaxonomicaPpal = categoriaTaxonomicaPpal;
     }
 
-    public void setHistorialDeterminacionSet(Set<HistorialDeterminacion> historialDeterminacionSet) {
-        this.historialDeterminacionSet = historialDeterminacionSet;
-    }
-
-    public Set<Ubicacion> getUbicacionSet() {
-        return ubicacionSet;
-    }
-
-    public void setUbicacionSet(Set<Ubicacion> ubicacionSet) {
-        this.ubicacionSet = ubicacionSet;
-    }
-
     public Set<Archivo> getArchivoSet() {
         return archivoSet;
     }
@@ -83,36 +67,12 @@ public class Especie {
         this.archivoSet = archivoSet;
     }
 
-    public Set<Ejemplares> getEjemplaresSet() {
-        return ejemplaresSet;
-    }
-
-    public void setEjemplaresSet(Set<Ejemplares> ejemplaresSet) {
-        this.ejemplaresSet = ejemplaresSet;
-    }
-
-    public Set<Conservacion> getConservacionSet() {
-        return conservacionSet;
-    }
-
-    public void setConservacionSet(Set<Conservacion> conservacionSet) {
-        this.conservacionSet = conservacionSet;
-    }
-
     public Long getId() {
         return id;
     }
 
     public String getNumeroCatalogo() {
         return numeroCatalogo;
-    }
-
-    public void setDatosMuestreoSet(Set<DatosMuestreo> datosMuestreoSet) {
-        this.datosMuestreoSet = datosMuestreoSet;
-    }
-
-    public Set<DatosMuestreo> getDatosMuestreoSet() {
-        return datosMuestreoSet;
     }
 
     public String getNumeroFrasco() {
@@ -161,5 +121,45 @@ public class Especie {
 
     public void setAutorAno(String autorAno) {
         this.autorAno = autorAno;
+    }
+
+    public DatosMuestreo getDatosMuestreo() {
+        return datosMuestreo;
+    }
+
+    public void setDatosMuestreo(DatosMuestreo datosMuestreo) {
+        this.datosMuestreo = datosMuestreo;
+    }
+
+    public Ejemplares getEjemplares() {
+        return ejemplares;
+    }
+
+    public void setEjemplares(Ejemplares ejemplares) {
+        this.ejemplares = ejemplares;
+    }
+
+    public Conservacion getConservacion() {
+        return conservacion;
+    }
+
+    public void setConservacion(Conservacion conservacion) {
+        this.conservacion = conservacion;
+    }
+
+    public HistorialDeterminacion getHistorialDeterminacion() {
+        return historialDeterminacion;
+    }
+
+    public void setHistorialDeterminacion(HistorialDeterminacion historialDeterminacion) {
+        this.historialDeterminacion = historialDeterminacion;
+    }
+
+    public Ubicacion getUbicacion() {
+        return ubicacion;
+    }
+
+    public void setUbicacion(Ubicacion ubicacion) {
+        this.ubicacion = ubicacion;
     }
 }

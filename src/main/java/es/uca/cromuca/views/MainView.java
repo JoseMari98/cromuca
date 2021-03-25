@@ -51,6 +51,7 @@ public class MainView extends AppLayout {
         } else {
             //hola
         }
+        tabs.add(createTab(VaadinIcon.RECORDS, "Buscar especie", BuscarView.class));
         tabs.add(createTab(VaadinIcon.RECORDS, "DatosMuestreo", DatosMuestreoView.class));
         tabs.add(createTab(VaadinIcon.RECORDS, "Ejemplares", EjemplaresView.class));
         tabs.add(createTab(VaadinIcon.RECORDS, "Conservacion", ConservacionView.class));

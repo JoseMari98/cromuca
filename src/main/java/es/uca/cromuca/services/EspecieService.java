@@ -1,7 +1,6 @@
 package es.uca.cromuca.services;
 
-import es.uca.cromuca.entities.Especie;
-import es.uca.cromuca.entities.Genero;
+import es.uca.cromuca.entities.*;
 import es.uca.cromuca.repositories.EspecieRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -58,5 +57,41 @@ public class EspecieService {
         Especie first = especieList.iterator().next();
 
         return first.getNumeroFrasco();
+    }
+
+    public List<Especie> findByNumeroCatalogoOrderByNumeroFrascoDesc(String numeroCatalogo) {
+        return especieRepository.findByNumeroCatalogoOrderByNumeroFrascoDesc(numeroCatalogo);
+    }
+
+    public List<Especie> find(Phylum phylum, CategoriaTaxonomicaPpal categoriaTaxonomicaPpal, Familia familia, Genero genero, Especie especie) {
+        //if(numeroCatalogo.isEmpty()){
+        if (especie != null)
+            return especieRepository.findByEspecie(especie);
+        else if (genero != null)
+            return especieRepository.findByGenero(genero);
+        else {
+            if (familia != null)
+                return especieRepository.findByFamilia(familia);
+            else {
+                if (categoriaTaxonomicaPpal != null)
+                    return especieRepository.findByCategoriaTaxonomicaPpal(categoriaTaxonomicaPpal);
+                else
+                    return especieRepository.findByPhylum(phylum);
+            }
+        }
+         /*else{
+            if(genero != null)
+                return especieRepository.findByNumeroCatalogoAndGenero(numeroCatalogo, genero);
+            else{
+                if(familia != null)
+                    return especieRepository.findByNumeroCatalogoAndFamilia(numeroCatalogo, familia);
+                else{
+                    if(categoriaTaxonomicaPpal != null)
+                        return especieRepository.findByNumeroCatalogoAndCategoriaTaxonomicaPpal(numeroCatalogo, categoriaTaxonomicaPpal);
+                    else
+                        return especieRepository.findByNumeroCatalogoAndPhylum(numeroCatalogo, phylum);
+                }
+            }
+        }*/
     }
 }

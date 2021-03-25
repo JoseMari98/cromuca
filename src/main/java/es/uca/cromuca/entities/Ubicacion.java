@@ -14,7 +14,7 @@ public class Ubicacion {
     private String estatus;
     @OneToMany(mappedBy = "ubicacion")
     private Set<Prestamo> prestamoSet;
-    @ManyToOne
+    @OneToOne
     private Especie especie;
 
     public void setId(Long id) {

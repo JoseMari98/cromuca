@@ -1,6 +1,8 @@
 package es.uca.cromuca.views.Gestion;
 
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
@@ -21,6 +23,7 @@ public class TipoSustratoGestionView extends AbstractView {
     private Grid<TipoSustrato> grid = new Grid<>(TipoSustrato.class);
     private TextField filterText = new TextField();
     private TipoSustratoService tipoSustratoService;
+    private Button volver = new Button("Volver");
     private TipoSustratoGestionForm form;
 
     @Autowired
@@ -47,7 +50,11 @@ public class TipoSustratoGestionView extends AbstractView {
         });
 
         HorizontalLayout toolbar = new HorizontalLayout(filterText,
-                addModeloBtn);
+                addModeloBtn, volver);
+        volver.addThemeVariants(ButtonVariant.LUMO_ERROR);
+        volver.addClickListener(e -> {
+            UI.getCurrent().navigate("DatosMuestreoView");
+        });
 
         grid.setColumns("tipoSustrato");
 

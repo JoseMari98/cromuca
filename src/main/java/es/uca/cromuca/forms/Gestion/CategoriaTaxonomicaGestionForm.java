@@ -1,7 +1,6 @@
 package es.uca.cromuca.forms.Gestion;
 
 import com.vaadin.flow.component.Key;
-import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.combobox.ComboBox;
@@ -19,7 +18,6 @@ public class CategoriaTaxonomicaGestionForm extends FormLayout {
     private ComboBox<Phylum> phylum = new ComboBox<>("Phylum");
     private Button save = new Button("Guardar");
     private Button delete = new Button("Borrar");
-    private Button volver = new Button("Volver");
     private CategoriaTaxonomicaGestionView categoriaTaxonomicaGestionView;
     private Binder<CategoriaTaxonomicaPpal> binder = new Binder<>(CategoriaTaxonomicaPpal.class);
     private EspecieService especieService;
@@ -37,8 +35,7 @@ public class CategoriaTaxonomicaGestionForm extends FormLayout {
         this.categoriaTaxonomicaService = categoriaTaxonomicaService;
         this.categoriaTaxonomicaGestionView = categoriaTaxonomicaGestionView;
 
-        HorizontalLayout buttons = new HorizontalLayout(save, delete, volver);
-        volver.addThemeVariants(ButtonVariant.LUMO_ERROR);
+        HorizontalLayout buttons = new HorizontalLayout(save, delete);
         save.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         add(phylum, categoriaTaxonomicaPpal, buttons);
         categoriaTaxonomicaPpal.setRequired(true);
@@ -48,10 +45,6 @@ public class CategoriaTaxonomicaGestionForm extends FormLayout {
         save.addClickShortcut(Key.ENTER);
 
         binder.bindInstanceFields(this);
-
-        volver.addClickListener(e -> {
-            UI.getCurrent().navigate("ClasificacionView");
-        });
 
         save.addClickListener(event -> {
             if (binder.getBean() != null)

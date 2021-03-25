@@ -1,6 +1,8 @@
 package es.uca.cromuca.views.Gestion;
 
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
@@ -20,6 +22,7 @@ import org.springframework.security.access.annotation.Secured;
 public class CategoriaTaxonomicaGestionView extends AbstractView {
     private Grid<CategoriaTaxonomicaPpal> grid = new Grid<>(CategoriaTaxonomicaPpal.class);
     private TextField filterText = new TextField();
+    private Button volver = new Button("Volver");
     private CategoriaTaxonomicaService categoriaTaxonomicaService;
     private CategoriaTaxonomicaGestionForm form;
 
@@ -40,6 +43,7 @@ public class CategoriaTaxonomicaGestionView extends AbstractView {
             }
 
         });
+
         Button addModeloBtn = new Button("Añade una categoría");
         addModeloBtn.addClickListener(e -> {
             grid.asSingleSelect().clear(); //clear para que borre si habia algo antes
@@ -47,7 +51,11 @@ public class CategoriaTaxonomicaGestionView extends AbstractView {
         });
 
         HorizontalLayout toolbar = new HorizontalLayout(filterText,
-                addModeloBtn);
+                addModeloBtn, volver);
+        volver.addThemeVariants(ButtonVariant.LUMO_ERROR);
+        volver.addClickListener(e -> {
+            UI.getCurrent().navigate("DatosMuestreoView");
+        });
 
         grid.setColumns("phylum.phylum", "categoriaTaxonomicaPpal");
 

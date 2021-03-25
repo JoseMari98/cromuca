@@ -14,7 +14,7 @@ public class Ejemplares {
     private String formato;
     private String caracteristicasTipo;
     private String formaAlmacenamiento;
-    @ManyToOne
+    @OneToOne
     private Especie especie;
 
     public void setId(Long id) {

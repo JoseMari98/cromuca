@@ -1,6 +1,8 @@
 package es.uca.cromuca.views.Gestion;
 
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
@@ -20,6 +22,7 @@ import org.springframework.security.access.annotation.Secured;
 public class MetodoCapturaGestionView extends AbstractView {
     private Grid<MetodoCaptura> grid = new Grid<>(MetodoCaptura.class);
     private TextField filterText = new TextField();
+    private Button volver = new Button("Volver");
     private MetodoCapturaService metodoCaptura;
     private MetodoCapturaGestionForm form;
 
@@ -47,7 +50,11 @@ public class MetodoCapturaGestionView extends AbstractView {
         });
 
         HorizontalLayout toolbar = new HorizontalLayout(filterText,
-                addModeloBtn);
+                addModeloBtn, volver);
+        volver.addThemeVariants(ButtonVariant.LUMO_ERROR);
+        volver.addClickListener(e -> {
+            UI.getCurrent().navigate("DatosMuestreoView");
+        });
 
         grid.setColumns("metodoCaptura");
 

@@ -1,7 +1,6 @@
 package es.uca.cromuca.forms.Gestion;
 
 import com.vaadin.flow.component.Key;
-import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.formlayout.FormLayout;
@@ -17,7 +16,6 @@ public class PaisGestionForm extends FormLayout {
     private TextField pais = new TextField("Pais");
     private Button save = new Button("Guardar");
     private Button delete = new Button("Borrar");
-    private Button volver = new Button("Volver");
     private PaisGestionView paisGestionView;
     private Binder<Pais> binder = new Binder<>(Pais.class);
     private PaisService paisService;
@@ -26,18 +24,13 @@ public class PaisGestionForm extends FormLayout {
         this.paisService = paisService;
         this.paisGestionView = paisGestionView;
 
-        HorizontalLayout buttons = new HorizontalLayout(save, delete, volver);
-        volver.addThemeVariants(ButtonVariant.LUMO_ERROR);
+        HorizontalLayout buttons = new HorizontalLayout(save, delete);
         save.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         add(pais, buttons);
         pais.setRequired(true);
         save.addClickShortcut(Key.ENTER);
 
         binder.bindInstanceFields(this);
-
-        volver.addClickListener(e -> {
-            UI.getCurrent().navigate("DatosMuestreoView");
-        });
 
         save.addClickListener(event -> {
             if (binder.getBean() != null)

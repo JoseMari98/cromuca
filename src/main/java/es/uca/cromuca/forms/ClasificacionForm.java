@@ -12,6 +12,7 @@ import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
+import com.vaadin.flow.data.binder.Binder;
 import es.uca.cromuca.entities.*;
 import es.uca.cromuca.services.*;
 import es.uca.cromuca.views.ArchivoView;
@@ -35,6 +36,7 @@ public class ClasificacionForm extends FormLayout {
     private ComboBox<CategoriaTaxonomicaPpal> categoriaTaxonomicaPpal = new ComboBox<>("Categoría tax. ppal.");
     private ComboBox<Phylum> phylum = new ComboBox<>("Phylum");
     private Checkbox nuevo = new Checkbox("Nuevo registro");
+    private Binder<Especie> binder = new Binder<>(Especie.class);
     public DatosMuestreoForm datosMuestreoForm;
     public EjemplaresForm ejemplaresForm;
     public ConservacionForm conservacionForm;
@@ -47,11 +49,17 @@ public class ClasificacionForm extends FormLayout {
     private FamiliaService familiaService;
     private PhylumService phylumService;
     private CategoriaTaxonomicaService categoriaTaxonomicaService;
-    private Especie especieCreada;
+    public Especie especieCreada = null;
     private Button save = new Button("Continuar");
 
     public ClasificacionForm(GeneroService generoService, EspecieService especieService, FamiliaService familiaService,
                              CategoriaTaxonomicaService categoriaTaxonomicaService, PhylumService phylumService) {
+        if (UI.getCurrent().getSession().getAttribute(Especie.class) != null) {
+            binder.setBean(UI.getCurrent().getSession().getAttribute(Especie.class));
+            especieCreada = binder.getBean();
+            numeroCatalogo.setValue(especieCreada.getNumeroCatalogo());
+            numeroFrasco.setValue(especieCreada.getNumeroFrasco());
+        }
         this.datosMuestreoForm = datosMuestreoForm;
         this.generoService = generoService;
         this.especieService = especieService;
@@ -193,9 +201,7 @@ public class ClasificacionForm extends FormLayout {
         });
 
         duplicar.addClickListener(e -> {
-            if (!numeroCatalogo.getValue().isEmpty() && phylum.getValue() != null && categoriaTaxonomicaPpal.getValue() != null &&
-                    familia.getValue() != null && genero.getValue() != null && !especie.getValue().isEmpty() &&
-                    !autorAno.getValue().isEmpty() && fechaAlta.getValue() != null && !numeroFrasco.getValue().isEmpty()) {
+            if (!numeroCatalogo.getValue().isEmpty() && !numeroFrasco.getValue().isEmpty()) {
                 Especie duplicado = new Especie();
                 String frascoString = especieService.nuevoFrasco(numeroCatalogo.getValue());
                 Integer numero = Integer.parseInt(frascoString) + 1;
@@ -212,6 +218,9 @@ public class ClasificacionForm extends FormLayout {
                 duplicado.setEspecie(especie.getValue());
                 duplicado.setFechaAlta(fechaAlta.getValue());
                 duplicado.setAutorAno(autorAno.getValue());
+                duplicado.setPhylum(phylum.getValue());
+                duplicado.setCategoriaTaxonomicaPpal(categoriaTaxonomicaPpal.getValue());
+                duplicado.setFamilia(familia.getValue());
                 especieService.guardar(duplicado);
                 numeroFrasco.setValue(duplicado.getNumeroFrasco());
                 Notification.show("Duplicado", 3000, Notification.Position.MIDDLE);

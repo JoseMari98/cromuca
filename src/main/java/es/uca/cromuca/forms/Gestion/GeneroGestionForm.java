@@ -1,7 +1,6 @@
 package es.uca.cromuca.forms.Gestion;
 
 import com.vaadin.flow.component.Key;
-import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.combobox.ComboBox;
@@ -23,7 +22,6 @@ public class GeneroGestionForm extends FormLayout {
     private ComboBox<Familia> familia = new ComboBox<>("Familia");
     private Button save = new Button("Guardar");
     private Button delete = new Button("Borrar");
-    private Button volver = new Button("Volver");
     private GeneroGestionView generoGestionView;
     private Binder<Genero> binder = new Binder<>(Genero.class);
     private EspecieService especieService;
@@ -36,8 +34,7 @@ public class GeneroGestionForm extends FormLayout {
         this.familiaService = familiaService;
         this.generoGestionView = generoGestionView;
 
-        HorizontalLayout buttons = new HorizontalLayout(save, delete, volver);
-        volver.addThemeVariants(ButtonVariant.LUMO_ERROR);
+        HorizontalLayout buttons = new HorizontalLayout(save, delete);
         save.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         add(familia, genero, buttons);
         familia.setRequired(true);
@@ -47,10 +44,6 @@ public class GeneroGestionForm extends FormLayout {
         save.addClickShortcut(Key.ENTER);
 
         binder.bindInstanceFields(this);
-
-        volver.addClickListener(e -> {
-            UI.getCurrent().navigate("ClasificacionView");
-        });
 
         save.addClickListener(event -> {
             if (binder.getBean() != null)

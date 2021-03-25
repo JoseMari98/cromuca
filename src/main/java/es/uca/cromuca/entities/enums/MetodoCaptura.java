@@ -13,7 +13,7 @@ public class MetodoCaptura {
     private Long id;
     @NotEmpty(message = "Este campo es obligatorio")
     private String metodoCaptura = "";
-    @OneToMany(mappedBy = "id")
+    @OneToMany(mappedBy = "metodoCaptura")
     private Set<DatosMuestreo> datosMuestreoSet;
 
     public Long getId() {

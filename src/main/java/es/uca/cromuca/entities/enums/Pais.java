@@ -13,7 +13,7 @@ public class Pais {
     private Long id;
     @NotEmpty(message = "Este campo es obligatorio")
     private String pais = "";
-    @OneToMany(mappedBy = "id")
+    @OneToMany(mappedBy = "pais")
     private Set<DatosMuestreo> datosMuestreoSet;
 
     public void setId(Long id) {
