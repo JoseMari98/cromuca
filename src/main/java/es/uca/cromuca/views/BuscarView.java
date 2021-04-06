@@ -18,10 +18,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.util.LinkedList;
 import java.util.List;
 
-@Route(value = "BuscarView", layout = MainView.class)
+@Route(value = "BuscarView")
 public class BuscarView extends VerticalLayout {
     private Grid<Especie> grid = new Grid<>(Especie.class);
     private Button comprobar = new Button("Buscar");
+    private Button limpiar = new Button("Limpiar");
+    private Button volver = new Button("Volver");
     private TextField numeroCatalogo = new TextField("Num. catálogo");
     private ComboBox<Especie> especie = new ComboBox<>("Especie");
     private ComboBox<Phylum> phylumComboBox = new ComboBox<>("Phylum");
@@ -56,7 +58,8 @@ public class BuscarView extends VerticalLayout {
         grid.addColumn(Especie::getEspecie).setHeader("Especie").setSortable(true);
 
 
-        HorizontalLayout formularios = new HorizontalLayout(numeroCatalogo, phylumComboBox, categoriaTaxonomicaPpalComboBox, familiaComboBox, generoComboBox, especie, comprobar);
+        volver.addClickListener(e -> UI.getCurrent().navigate(""));
+        HorizontalLayout formularios = new HorizontalLayout(numeroCatalogo, phylumComboBox, categoriaTaxonomicaPpalComboBox, familiaComboBox, generoComboBox, especie, comprobar, volver);
         HorizontalLayout datosMuestreo = new HorizontalLayout(regionBiogeografica, regionMarina, habitat, tipoOrganismo, tipoSustrato);
         formularios.setAlignItems(Alignment.BASELINE);
         HorizontalLayout mainContent = new HorizontalLayout(grid); //metemos en un objeto el grid y formulario

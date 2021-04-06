@@ -16,7 +16,7 @@ public class HistorialDeterminacionView extends VerticalLayout {
     HistorialDeterminacionView(GeneroService generoService, CategoriaTaxonomicaService categoriaTaxonomicaService, FamiliaService familiaService, PhylumService phylumService,
                                EspecieService especieService, HistorialDeterminacionService historialDeterminacionService) {
         this.historialDeterminacionForm = new HistorialDeterminacionForm(this, especieService, historialDeterminacionService);
-        this.clasificacionForm = new ClasificacionForm(generoService, especieService, familiaService, categoriaTaxonomicaService, phylumService);
+        this.clasificacionForm = new ClasificacionForm(generoService, especieService, familiaService, categoriaTaxonomicaService, phylumService, false);
         this.clasificacionForm.historialDeterminacionForm = historialDeterminacionForm;
         VerticalLayout contenido = new VerticalLayout(clasificacionForm, historialDeterminacionForm);
         //contenido.setSizeFull();

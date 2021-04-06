@@ -21,7 +21,7 @@ public class DatosMuestreoView extends VerticalLayout {
     DatosMuestreoView(GeneroService generoService, CategoriaTaxonomicaService categoriaTaxonomicaService, FamiliaService familiaService, PhylumService phylumService,
                       EspecieService especieService, DatosMuestreoService datosMuestreoService, TipoSustratoService tipoSustratoService, PaisService paisService,
                       MetodoCapturaService metodoCapturaService) {
-        this.clasificacionForm = new ClasificacionForm(generoService, especieService, familiaService, categoriaTaxonomicaService, phylumService);
+        this.clasificacionForm = new ClasificacionForm(generoService, especieService, familiaService, categoriaTaxonomicaService, phylumService, false);
         this.datosMuestreoForm = new DatosMuestreoForm(this, especieService, datosMuestreoService, tipoSustratoService, paisService,
                 metodoCapturaService);
         this.clasificacionForm.datosMuestreoForm = datosMuestreoForm;

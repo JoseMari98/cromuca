@@ -1,7 +1,6 @@
 package es.uca.cromuca.forms;
 
 import com.vaadin.flow.component.Key;
-import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.combobox.ComboBox;
@@ -27,7 +26,6 @@ public class ArchivoForm extends FormLayout {
     private ComboBox<FormatoMultimedia> formatoMultimedia = new ComboBox<>("Formato");
     private Button save = new Button("Guardar");
     private Button delete = new Button("Borrar");
-    private Button volver = new Button("Volver");
     private ArchivoView archivoView;
     private Binder<Archivo> binder = new Binder<>(Archivo.class);
     private EspecieService especieService;
@@ -40,11 +38,10 @@ public class ArchivoForm extends FormLayout {
         this.archivoService = archivoService;
         this.archivoView = archivoView;
 
-        HorizontalLayout buttons = new HorizontalLayout(save, delete, volver);
+        HorizontalLayout buttons = new HorizontalLayout(save, delete);
         VerticalLayout izq = new VerticalLayout(formatoMultimedia, fecha);
         VerticalLayout dcha = new VerticalLayout(autor, link);
         HorizontalLayout forms = new HorizontalLayout(izq, dcha);
-        volver.addThemeVariants(ButtonVariant.LUMO_ERROR);
         save.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
 
         formatoMultimedia.setItems(FormatoMultimedia.values());
@@ -56,9 +53,6 @@ public class ArchivoForm extends FormLayout {
 
         observaciones.getStyle().set("minHeight", "150px");
 
-        volver.addClickListener(e -> {
-            UI.getCurrent().navigate("ClasificacionView");
-        });
 
         save.addClickListener(event -> {
             if (binder.getBean() != null)

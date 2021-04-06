@@ -18,7 +18,7 @@ public class EjemplaresView extends VerticalLayout {
     EjemplaresView(GeneroService generoService, CategoriaTaxonomicaService categoriaTaxonomicaService, FamiliaService familiaService, PhylumService phylumService,
                    EspecieService especieService, EjemplaresService ejemplaresService) {
         this.ejemplaresForm = new EjemplaresForm(this, especieService, ejemplaresService);
-        this.clasificacionForm = new ClasificacionForm(generoService, especieService, familiaService, categoriaTaxonomicaService, phylumService);
+        this.clasificacionForm = new ClasificacionForm(generoService, especieService, familiaService, categoriaTaxonomicaService, phylumService, false);
         this.clasificacionForm.ejemplaresForm = ejemplaresForm;
         VerticalLayout contenido = new VerticalLayout(clasificacionForm, ejemplaresForm);
         //contenido.setSizeFull();

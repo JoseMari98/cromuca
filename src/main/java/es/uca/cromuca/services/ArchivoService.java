@@ -34,7 +34,7 @@ public class ArchivoService {
         archivoRepository.delete(entrada);
     }
 
-    public Archivo findByEspecie(Especie especie) {
+    public List<Archivo> findByEspecie(Especie especie) {
         return archivoRepository.findByEspecie(especie);
     }
 }

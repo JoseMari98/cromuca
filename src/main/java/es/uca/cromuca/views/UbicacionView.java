@@ -29,7 +29,7 @@ public class UbicacionView extends VerticalLayout {
     @Autowired
     UbicacionView(GeneroService generoService, CategoriaTaxonomicaService categoriaTaxonomicaService, FamiliaService familiaService, PhylumService phylumService,
                   EspecieService especieService, UbicacionService ubicacionService, PrestamoService prestamoService) {
-        this.clasificacionForm = new ClasificacionForm(generoService, especieService, familiaService, categoriaTaxonomicaService, phylumService);
+        this.clasificacionForm = new ClasificacionForm(generoService, especieService, familiaService, categoriaTaxonomicaService, phylumService, false);
         this.ubicacionForm = new UbicacionForm(this, especieService, ubicacionService);
         this.clasificacionForm.ubicacionForm = ubicacionForm;
         this.prestamoForm = new PrestamoForm(this, ubicacionService, prestamoService);

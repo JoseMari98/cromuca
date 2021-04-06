@@ -3,7 +3,6 @@ package es.uca.cromuca.forms;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
-import com.vaadin.flow.component.checkbox.Checkbox;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.datepicker.DatePicker;
 import com.vaadin.flow.component.formlayout.FormLayout;
@@ -21,7 +20,7 @@ import java.time.LocalDate;
 
 public class ClasificacionForm extends FormLayout {
     private Button comprobar = new Button("Buscar");
-    private Button duplicar = new Button("Duplicar");
+    //private Button duplicar = new Button("Duplicar");
     private Button addThingsPhylum = new Button("+");
     private Button addThingsCategoria = new Button("+");
     private Button addThingsFamilia = new Button("+");
@@ -35,7 +34,8 @@ public class ClasificacionForm extends FormLayout {
     private ComboBox<Familia> familia = new ComboBox<>("Familia");
     private ComboBox<CategoriaTaxonomicaPpal> categoriaTaxonomicaPpal = new ComboBox<>("Categoría tax. ppal.");
     private ComboBox<Phylum> phylum = new ComboBox<>("Phylum");
-    private Checkbox nuevo = new Checkbox("Nuevo registro");
+    //private Checkbox nuevo = new Checkbox("Nuevo registro");
+    private boolean nuevo;
     private Binder<Especie> binder = new Binder<>(Especie.class);
     public DatosMuestreoForm datosMuestreoForm;
     public EjemplaresForm ejemplaresForm;
@@ -50,16 +50,22 @@ public class ClasificacionForm extends FormLayout {
     private PhylumService phylumService;
     private CategoriaTaxonomicaService categoriaTaxonomicaService;
     public Especie especieCreada = null;
-    private Button save = new Button("Continuar");
+    private Button save = new Button("Guardar");
+    private Button volver = new Button("Volver");
 
     public ClasificacionForm(GeneroService generoService, EspecieService especieService, FamiliaService familiaService,
-                             CategoriaTaxonomicaService categoriaTaxonomicaService, PhylumService phylumService) {
+                             CategoriaTaxonomicaService categoriaTaxonomicaService, PhylumService phylumService, boolean nuevo) {
         if (UI.getCurrent().getSession().getAttribute(Especie.class) != null) {
             binder.setBean(UI.getCurrent().getSession().getAttribute(Especie.class));
             especieCreada = binder.getBean();
             numeroCatalogo.setValue(especieCreada.getNumeroCatalogo());
             numeroFrasco.setValue(especieCreada.getNumeroFrasco());
         }
+
+        volver.addClickListener(e -> {
+            UI.getCurrent().navigate("");
+        });
+        this.nuevo = nuevo;
         this.datosMuestreoForm = datosMuestreoForm;
         this.generoService = generoService;
         this.especieService = especieService;
@@ -92,7 +98,7 @@ public class ClasificacionForm extends FormLayout {
         });
 
         if (UI.getCurrent().getSession().getAttribute(Usuario.class) == null) {
-            duplicar.setEnabled(false);
+            //duplicar.setEnabled(false);
             save.setEnabled(false);
             addThingsCategoria.setEnabled(false);
             addThingsFamilia.setEnabled(false);
@@ -100,7 +106,7 @@ public class ClasificacionForm extends FormLayout {
             addThingsPhylum.setEnabled(false);
         }
 
-        nuevo.addClickListener(e -> {
+        /*nuevo.addClickListener(e -> {
             if (nuevo.getValue()) {
                 if (especieService.findLastid() == null) { //no hay ninguno insertado
                     numeroCatalogo.setValue("0001");
@@ -132,7 +138,39 @@ public class ClasificacionForm extends FormLayout {
                 numeroFrasco.setEnabled(true);
                 numeroCatalogo.setEnabled(true);
             }
-        });
+        });*/
+
+        if (nuevo) {
+            if (especieService.findLastid() == null) { //no hay ninguno insertado
+                numeroCatalogo.setValue("0001");
+            } else { //hay insertado
+                String catalogoString = especieService.nuevoNumero();
+                Integer numero = Integer.parseInt(catalogoString) + 1;
+                switch (numero.toString().length()) {
+                    case 1:
+                        numeroCatalogo.setValue("000" + numero.toString());
+                        break;
+                    case 2:
+                        numeroCatalogo.setValue("00" + numero.toString());
+                        break;
+                    case 3:
+                        numeroCatalogo.setValue("0" + numero.toString());
+                        break;
+                    case 4:
+                        numeroCatalogo.setValue(numero.toString());
+                        break;
+                }
+            }
+            numeroFrasco.setValue("01");
+            numeroCatalogo.setEnabled(false);
+            numeroFrasco.setEnabled(false);
+            fechaAlta.setValue(LocalDate.now());
+        } /*else{
+            numeroCatalogo.setValue("");
+            numeroFrasco.setValue("");
+            numeroFrasco.setEnabled(true);
+            numeroCatalogo.setEnabled(true);
+        }*/
         addThingsPhylum.addClickListener(e -> {
             UI.getCurrent().navigate("GestionPhylum");
         });
@@ -200,7 +238,7 @@ public class ClasificacionForm extends FormLayout {
             }
         });
 
-        duplicar.addClickListener(e -> {
+        /*duplicar.addClickListener(e -> {
             if (!numeroCatalogo.getValue().isEmpty() && !numeroFrasco.getValue().isEmpty()) {
                 Especie duplicado = new Especie();
                 String frascoString = especieService.nuevoFrasco(numeroCatalogo.getValue());
@@ -228,9 +266,9 @@ public class ClasificacionForm extends FormLayout {
                 //Copiar todos los formularios
             } else
                 Notification.show("Comprueba tus datos al duplicar", 3000, Notification.Position.MIDDLE);
-        });
+        });*/
 
-        HorizontalLayout numeroCatalogoLay = new HorizontalLayout(numeroCatalogo, numeroFrasco, comprobar, nuevo);
+        HorizontalLayout numeroCatalogoLay = new HorizontalLayout(numeroCatalogo, numeroFrasco, comprobar);
         numeroCatalogoLay.setAlignItems(FlexComponent.Alignment.BASELINE);
         HorizontalLayout phylumLay = new HorizontalLayout(phylum, addThingsPhylum);
         phylumLay.setAlignItems(FlexComponent.Alignment.BASELINE);
@@ -242,7 +280,9 @@ public class ClasificacionForm extends FormLayout {
         generoLay.setAlignItems(FlexComponent.Alignment.BASELINE);
         HorizontalLayout especieLay = new HorizontalLayout(especie, autorAno, fechaAlta);
         VerticalLayout izq = new VerticalLayout(numeroCatalogoLay, categoriaLay, generoLay);
-        VerticalLayout dcha = new VerticalLayout(phylumLay, familiaLay, especieLay, save, duplicar);
+        VerticalLayout dcha = new VerticalLayout(phylumLay, familiaLay, especieLay, save, volver);
+
+        volver.addThemeVariants(ButtonVariant.LUMO_ERROR);
 
         add(izq, dcha);
         //save.addClickShortcut(Key.ENTER);
@@ -250,7 +290,7 @@ public class ClasificacionForm extends FormLayout {
     }
 
     public void save(){
-        if (nuevo.getValue()) { //nuevo registro
+        if (nuevo) { //nuevo registro
             if (!numeroCatalogo.getValue().isEmpty() && phylum.getValue() != null && !numeroFrasco.getValue().isEmpty()) {
                 Especie e = new Especie();
                 e.setEspecie(especie.getValue());
@@ -262,8 +302,9 @@ public class ClasificacionForm extends FormLayout {
                 e.setNumeroCatalogo(numeroCatalogo.getValue());
                 e.setNumeroFrasco(numeroFrasco.getValue());
                 e.setGenero(genero.getValue());
-                especieService.guardar(e);
+                especieCreada = especieService.guardar(e);
                 Notification.show("Guardado con éxito", 3000, Notification.Position.MIDDLE);
+                UI.getCurrent().navigate("DatosMuestreoView");
             } else
                 Notification.show("Comprueba tus datos", 3000, Notification.Position.MIDDLE);
         } else { //registro antiguo
@@ -277,7 +318,7 @@ public class ClasificacionForm extends FormLayout {
                 especieCreada.setNumeroCatalogo(numeroCatalogo.getValue());
                 especieCreada.setNumeroFrasco(numeroFrasco.getValue());
                 especieCreada.setGenero(genero.getValue());
-                especieService.guardar(especieCreada);
+                especieCreada = especieService.guardar(especieCreada);
                 Notification.show("Guardado con éxito", 3000, Notification.Position.MIDDLE);
             } else
                 Notification.show("Comprueba tus datos", 3000, Notification.Position.MIDDLE);
