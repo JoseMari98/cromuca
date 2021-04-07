@@ -15,6 +15,8 @@ import com.vaadin.flow.data.binder.Binder;
 import es.uca.cromuca.entities.*;
 import es.uca.cromuca.services.*;
 import es.uca.cromuca.views.ArchivoView;
+import org.vaadin.textfieldformatter.CustomStringBlockFormatter;
+import org.vaadin.textfieldformatter.CustomStringBlockFormatter.Builder;
 
 import java.time.LocalDate;
 
@@ -65,6 +67,18 @@ public class ClasificacionForm extends FormLayout {
         volver.addClickListener(e -> {
             UI.getCurrent().navigate("");
         });
+
+        new Builder()
+                .blocks(4)
+                .prefix("UCA", false, "-")
+                .numeric()
+                .build().extend(numeroCatalogo);
+
+        CustomStringBlockFormatter.Options options = new CustomStringBlockFormatter.Options();
+        options.setBlocks(2);
+        new CustomStringBlockFormatter(options).extend(numeroFrasco);
+
+        comprobar.setEnabled(!nuevo);
         this.nuevo = nuevo;
         this.datosMuestreoForm = datosMuestreoForm;
         this.generoService = generoService;
@@ -184,6 +198,12 @@ public class ClasificacionForm extends FormLayout {
             UI.getCurrent().navigate("GestionGenero");
         });
         comprobar.addClickListener(e -> {
+            if (numeroCatalogo.getValue().length() > 4) {
+                String[] parts = numeroCatalogo.getValue().split("-");
+                String part2 = parts[1];
+                numeroCatalogo.setValue(part2);
+            }
+
             if (especieService.findByNumCatalogoAndFrasco(numeroCatalogo.getValue(), numeroFrasco.getValue()) != null) {
                 if (UI.getCurrent().getInternals().getActiveViewLocation().getFirstSegment().equals("DatosMuestreoView")) {
                     datosMuestreoForm.numeroFrasco.setValue(numeroFrasco.getValue());
@@ -303,6 +323,7 @@ public class ClasificacionForm extends FormLayout {
                 e.setNumeroFrasco(numeroFrasco.getValue());
                 e.setGenero(genero.getValue());
                 especieCreada = especieService.guardar(e);
+                UI.getCurrent().getSession().setAttribute(Especie.class, especieCreada);
                 Notification.show("Guardado con éxito", 3000, Notification.Position.MIDDLE);
                 UI.getCurrent().navigate("DatosMuestreoView");
             } else

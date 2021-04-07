@@ -20,6 +20,9 @@ import es.uca.cromuca.forms.ClasificacionForm;
 import es.uca.cromuca.services.*;
 import es.uca.cromuca.springclasses.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.vaadin.textfieldformatter.CustomStringBlockFormatter;
+import org.vaadin.textfieldformatter.CustomStringBlockFormatter.Builder;
+import org.vaadin.textfieldformatter.CustomStringBlockFormatter.Options;
 
 @Route(value = "")
 public class InicioView extends VerticalLayout {
@@ -37,7 +40,7 @@ public class InicioView extends VerticalLayout {
                       UbicacionService ubicacionService, ArchivoService archivoService, PrestamoService prestamoService) {
         this.clasificacionForm = new ClasificacionForm(generoService, especieService, familiaService, categoriaTaxonomicaService, phylumService, true);
         H1 titulo = new H1("");
-        Image image = new Image("images/pngwing.com.png", "cangrejo");
+        Image image = new Image("images/cangrejo.png", "cangrejo");
         image.setWidth("107.73");
         image.setHeight("332.25");
         VerticalLayout imagenLay = new VerticalLayout(image);
@@ -61,6 +64,10 @@ public class InicioView extends VerticalLayout {
             dialog.setCloseOnOutsideClick(false);
 
             Button confirmButtonEditar = new Button("Confirmar", event -> {
+                String[] parts = numeroCatalogo.getValue().split("-");
+                String part1 = parts[0]; // 004
+                String part2 = parts[1];
+                numeroCatalogo.setValue(part2);
                 if (especieService.findByNumCatalogoAndFrasco(numeroCatalogo.getValue(), numeroFrasco.getValue()) != null) {
                     UI.getCurrent().getSession().setAttribute(Especie.class, especieService.findByNumCatalogoAndFrasco(numeroCatalogo.getValue(), numeroFrasco.getValue()));
                     UI.getCurrent().navigate("DatosMuestreoView");
@@ -80,6 +87,10 @@ public class InicioView extends VerticalLayout {
             });
 
             Button confirmButtonDuplicar = new Button("Confirmar", event -> {
+                String[] parts = numeroCatalogo.getValue().split("-");
+                String part1 = parts[0]; // 004
+                String part2 = parts[1];
+                numeroCatalogo.setValue(part2);
                 if (especieService.findByNumCatalogoAndFrasco(numeroCatalogo.getValue(), numeroFrasco.getValue()) != null) {
                     Especie antiguo = especieService.findByNumCatalogoAndFrasco(numeroCatalogo.getValue(), numeroFrasco.getValue());
                     //clasificacionForm.especieCreada = especieService.findByNumCatalogoAndFrasco(numeroCatalogo.getValue(), numeroFrasco.getValue());
@@ -122,6 +133,10 @@ public class InicioView extends VerticalLayout {
             });
 
             Button confirmButtonEliminar = new Button("Confirmar", event -> {
+                String[] parts = numeroCatalogo.getValue().split("-");
+                String part1 = parts[0]; // 004
+                String part2 = parts[1];
+                numeroCatalogo.setValue(part2);
                 if (especieService.findByNumCatalogoAndFrasco(numeroCatalogo.getValue(), numeroFrasco.getValue()) != null) {
                     Especie especie = especieService.findByNumCatalogoAndFrasco(numeroCatalogo.getValue(), numeroFrasco.getValue());
                     if (especie.getDatosMuestreo() != null)
@@ -187,6 +202,16 @@ public class InicioView extends VerticalLayout {
             contenido.setAlignItems(Alignment.CENTER);
             main.setAlignItems(Alignment.CENTER);*/
             setAlignItems(Alignment.CENTER);
+            new Builder()
+                    .blocks(4)
+                    .prefix("UCA", false, "-")
+                    .numeric()
+                    .build().extend(numeroCatalogo);
+
+            Options options = new Options();
+            options.setBlocks(2);
+            new CustomStringBlockFormatter(options).extend(numeroFrasco);
+
             contenido.add(buttonsLay);
         } else {
             Button consultor = new Button("Consultor");

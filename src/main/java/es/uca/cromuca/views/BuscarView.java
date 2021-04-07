@@ -14,6 +14,7 @@ import es.uca.cromuca.entities.enums.TipoSustrato;
 import es.uca.cromuca.services.*;
 import es.uca.cromuca.services.enums.TipoSustratoService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.vaadin.textfieldformatter.CustomStringBlockFormatter;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -66,7 +67,18 @@ public class BuscarView extends VerticalLayout {
         mainContent.setSizeFull();
         grid.setSizeFull();
 
+        new CustomStringBlockFormatter.Builder()
+                .blocks(4)
+                .prefix("UCA", false, "-")
+                .numeric()
+                .build().extend(numeroCatalogo);
+
         comprobar.addClickListener(e -> {
+            if (numeroCatalogo.getValue().length() > 4) {
+                String[] parts = numeroCatalogo.getValue().split("-");
+                String part2 = parts[1];
+                numeroCatalogo.setValue(part2);
+            }
             if (!numeroCatalogo.getValue().isEmpty()) {
                 if (especieService.findByNumeroCatalogoOrderByNumeroFrascoDesc(numeroCatalogo.getValue()) != null) {
                     especieList.clear();
